@@ -1,0 +1,603 @@
+/* ====== CERTIFICATES SECTION ====== */
+
+.cert-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin-top: 0;
+}
+
+.cert-container {
+  width: 100%;
+  max-width: 900px;
+  padding: 0 35.2px;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Header */
+.cert-header {
+  margin-bottom: 52.8px;
+}
+
+.cert-title-section {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.cert-icon {
+  width: 61.6px;
+  height: 61.6px;
+  background: linear-gradient(135deg, rgba(82, 39, 255, 0.2), rgba(157, 78, 221, 0.2));
+  border: 1px solid rgba(82, 39, 255, 0.3);
+  border-radius: 15.4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(82, 39, 255, 0.8);
+  backdrop-filter: blur(10px);
+}
+
+.cert-main-title {
+  color: white;
+  font-size: 2.75rem;
+  font-weight: 700;
+  margin: 0 0 6.6px 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #ffffff, rgba(255, 255, 255, 0.7));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cert-subtitle {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.1rem;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+}
+
+/* Filter Tabs */
+.cert-filters {
+  display: flex;
+  gap: 13.2px;
+  margin-bottom: 52.8px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 11px 19.8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 11px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.045rem;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: capitalize;
+}
+
+.filter-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.filter-btn.active {
+  background: linear-gradient(135deg, #5227FF, #9D4EDD);
+  border-color: rgba(82, 39, 255, 0.5);
+  color: white;
+  box-shadow: 0 8.8px 22px rgba(82, 39, 255, 0.3);
+}
+
+/* Grid Container */
+.cert-grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+  margin-bottom: 52.8px;
+}
+
+.cert-card-wrapper {
+  animation: slideInUp 0.5s ease-out;
+  animation-delay: var(--delay, 0s);
+  animation-fill-mode: both;
+}
+
+/* Individual Card */
+.cert-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.005));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 17.6px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.cert-card:hover {
+  transform: translateY(-13.2px) scale(1.02);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 22px 66px rgba(82, 39, 255, 0.25), 0 0 44px rgba(82, 39, 255, 0.1);
+}
+
+/* Image Container */
+.cert-image-container {
+  position: relative;
+  width: 100%;
+  height: 176px;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(82, 39, 255, 0.1), rgba(157, 78, 221, 0.1));
+}
+
+.cert-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.cert-card:hover .cert-image {
+  transform: scale(1.088);
+  filter: brightness(0.8);
+}
+
+.cert-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(82, 39, 255, 0.4), rgba(157, 78, 221, 0.3));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  backdrop-filter: blur(4.4px);
+}
+
+.cert-card:hover .cert-overlay {
+  opacity: 1;
+}
+
+.cert-overlay-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cert-view-badge {
+  background: rgba(255, 255, 255, 0.95);
+  color: #5227FF;
+  padding: 11px 22px;
+  border-radius: 55px;
+  font-weight: 600;
+  font-size: 0.99rem;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Date Badge */
+.cert-badge {
+  position: absolute;
+  top: 13.2px;
+  right: 13.2px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 6.6px 13.2px;
+  border-radius: 8.8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Info Section */
+.cert-info {
+  padding: 17.6px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.cert-category-tag {
+  display: inline-block;
+  background: linear-gradient(135deg, rgba(82, 39, 255, 0.15), rgba(157, 78, 221, 0.1));
+  border: 1px solid rgba(82, 39, 255, 0.3);
+  color: rgba(82, 39, 255, 0.8);
+  padding: 4.4px 11px;
+  border-radius: 55px;
+  font-size: 0.825rem;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  width: fit-content;
+}
+
+.cert-card-title {
+  color: white;
+  font-size: 1.045rem;
+  font-weight: 700;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.4;
+  transition: color 0.3s ease;
+}
+
+.cert-card:hover .cert-card-title {
+  color: rgba(255, 255, 255, 1);
+}
+
+.cert-issuer-name {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.88rem;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+.cert-external-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6.6px;
+  color: rgba(82, 39, 255, 0.8);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.3s ease;
+  width: fit-content;
+  margin-top: 8.8px;
+}
+
+.cert-external-link:hover {
+  color: rgba(82, 39, 255, 1);
+  gap: 11px;
+}
+
+/* Load More Button */
+.cert-load-more-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 52.8px;
+}
+
+.cert-load-more-btn {
+  padding: 15.4px 35.2px;
+  background: linear-gradient(135deg, #5227FF, #9D4EDD);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 11px;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cert-load-more-btn:hover {
+  transform: translateY(-3.3px);
+  box-shadow: 0 13.2px 33px rgba(82, 39, 255, 0.4);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.cert-load-more-btn:active {
+  transform: translateY(-1px);
+}
+
+/* Modal */
+.cert-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.cert-modal.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.cert-modal-content {
+  background: linear-gradient(180deg, rgba(20, 20, 30, 0.95), rgba(10, 10, 20, 0.95));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 22px;
+  padding: 35.2px;
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 27.5px 88px rgba(0, 0, 0, 0.7), 0 0 66px rgba(82, 39, 255, 0.2);
+  position: relative;
+  animation: modalSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.cert-modal-close {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: white;
+  font-size: 26.4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-weight: 300;
+}
+
+.cert-modal-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(90deg);
+}
+
+.cert-modal-body {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 35.2px;
+  align-items: start;
+}
+
+.cert-modal-image {
+  position: relative;
+  border-radius: 15.4px;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(82, 39, 255, 0.15), rgba(157, 78, 221, 0.1));
+  box-shadow: 0 13.2px 44px rgba(82, 39, 255, 0.2);
+}
+
+.cert-modal-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 13.2px;
+}
+
+.cert-modal-text {
+  display: flex;
+  flex-direction: column;
+  gap: 17.6px;
+  color: white;
+}
+
+.cert-modal-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, rgba(82, 39, 255, 0.2), rgba(157, 78, 221, 0.15));
+  border: 1px solid rgba(82, 39, 255, 0.4);
+  color: rgba(82, 39, 255, 0.9);
+  padding: 8.8px 17.6px;
+  border-radius: 55px;
+  font-size: 0.935rem;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  width: fit-content;
+}
+
+.cert-modal-title {
+  font-size: 1.98rem;
+  font-weight: 700;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.3;
+}
+
+.cert-modal-issuer {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.155rem;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+}
+
+.cert-modal-date {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.045rem;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+.cert-modal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8.8px;
+  background: linear-gradient(135deg, #5227FF, #9D4EDD);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 13.2px 26.4px;
+  border-radius: 11px;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.045rem;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.3s ease;
+  width: fit-content;
+  margin-top: 13.2px;
+}
+
+.cert-modal-btn:hover {
+  transform: translateY(-2.2px);
+  box-shadow: 0 11px 33px rgba(82, 39, 255, 0.4);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .cert-container {
+    padding: 0 22px;
+  }
+
+  .cert-main-title {
+    font-size: 2.2rem;
+  }
+
+  .cert-grid-container {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .cert-modal-body {
+    grid-template-columns: 1fr;
+    gap: 26.4px;
+  }
+
+  .cert-modal-content {
+    padding: 26.4px;
+  }
+
+  .cert-card-title {
+    font-size: 1.1rem;
+  }
+
+  .cert-modal-title {
+    font-size: 1.65rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cert-container {
+    padding: 0 17.6px;
+  }
+
+  .cert-title-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 13.2px;
+  }
+
+  .cert-icon {
+    width: 52.8px;
+    height: 52.8px;
+  }
+
+  .cert-main-title {
+    font-size: 1.76rem;
+  }
+
+  .cert-subtitle {
+    font-size: 0.99rem;
+  }
+
+  .cert-filters {
+    gap: 8.8px;
+  }
+
+  .filter-btn {
+    padding: 8.8px 15.4px;
+    font-size: 0.935rem;
+  }
+
+  .cert-card {
+    border-radius: 13.2px;
+  }
+
+  .cert-image-container {
+    height: 176px;
+  }
+
+  .cert-info {
+    padding: 17.6px;
+    gap: 11px;
+  }
+
+  .cert-card-title {
+    font-size: 1.045rem;
+  }
+
+  .cert-issuer-name {
+    font-size: 0.935rem;
+  }
+
+  .cert-badge {
+    font-size: 0.825rem;
+    padding: 5.5px 11px;
+  }
+
+  .cert-modal-content {
+    padding: 22px;
+    border-radius: 17.6px;
+  }
+
+  .cert-modal-close {
+    width: 39.6px;
+    height: 39.6px;
+    font-size: 22px;
+  }
+
+  .cert-load-more-btn {
+    padding: 13.2px 26.4px;
+    font-size: 0.99rem;
+  }
+}
+
+/* Scrollbar styling for modal */
+.cert-modal-content::-webkit-scrollbar {
+  width: 6.6px;
+}
+
+.cert-modal-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 11px;
+}
+
+.cert-modal-content::-webkit-scrollbar-thumb {
+  background: rgba(82, 39, 255, 0.5);
+  border-radius: 11px;
+}
+
+.cert-modal-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(82, 39, 255, 0.8);
+}

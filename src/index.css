@@ -1,0 +1,273 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+/* Hide scrollbars globally while keeping scroll functionality for all scrollable elements
+   - Firefox: scrollbar-width
+   - IE/Edge (legacy): -ms-overflow-style
+   - WebKit browsers (Chrome/Safari/Edge): hide via width/height 0 for ::-webkit-scrollbar pseudo-element
+   Note: keep accessibility in mind; if you need to show scrollbars for assistive scenarios, apply the .show-scrollbar class */
+html, body, * { 
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+html::-webkit-scrollbar, body::-webkit-scrollbar, *::-webkit-scrollbar {
+  width: 0px; height: 0px; /* hide for WebKit */
+}
+
+/* Opt-out: use this class on any container when a visible scrollbar is required */
+.show-scrollbar {
+  scrollbar-width: auto;
+  -ms-overflow-style: auto;
+}
+.show-scrollbar::-webkit-scrollbar { width: 10px; height: 10px }
+.show-scrollbar::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.12); border-radius: 8px }
+
+/* Small native fallback for anchor links and some browsers */
+html { scroll-behavior: smooth; }
+
+#root {
+  width: 100%;
+}
+
+body {
+  background: #000;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.glass-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #5227FF 0%, #9D4EDD 100%);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(82, 39, 255, 0.4);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+}
+
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.social-icon:hover {
+  background: linear-gradient(135deg, #5227FF 0%, #9D4EDD 100%);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(82, 39, 255, 0.3);
+}
+
+/* Scroll Indicator Styles */
+.scroll-indicator {
+  animation: bounce 2s infinite;
+}
+
+.scroll-indicator p {
+  animation: fadeInOut 2s infinite;
+}
+
+
+
+.scroll-mouse {
+  width: 30px;
+  height: 50px;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 15px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 8px;
+  position: relative;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+}
+
+.scroll-wheel {
+  width: 4px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 2px;
+  animation: scroll 1.5s infinite;
+}
+
+@keyframes scroll {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-10px);
+  }
+}
+
+@keyframes fadeInOut {
+  0%, 100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+/* About section layout: left text + right empty placeholder */
+.about-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+  margin-top: 20px;
+}
+.about-left {
+  color: rgba(255,255,255,0.95);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem !important;
+  line-height: 1.8;
+  max-width: 120%;
+}
+.about-right {
+  /* center any child element (decay card) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 480px;
+  border-radius: 12px;
+  /* empty area for future content; subtle outline so dev can see it */
+  border: 1px dashed rgba(255,255,255,0.06);
+}
+
+@media (max-width: 900px){
+  .about-content{ grid-template-columns: 1fr; }
+  .about-right{ display:none; }
+}
+
+/* Responsive home banner adjustments */
+@media (max-width: 900px){
+  .home-main { left: auto !important; top: auto !important; transform: none !important; padding: 18px; }
+  .home-main .h1 { font-size: 2.2rem !important; }
+  .home-main p { font-size: 0.98rem !important; }
+  .home-profile { right: auto !important; top: auto !important; position: relative !important; }
+  .scroll-indicator { display: none; }
+}
+
+@media (max-width: 480px){
+  .home-main { margin-left: 6px; margin-right: 6px }
+  .home-main .h1 { font-size: 1.75rem !important; }
+  .skills-grid { grid-template-columns: repeat(2, 1fr); }
+  .skill-card { width: 100%; }
+  .btn-primary, .btn-secondary { padding: 10px 14px; font-size: 0.94rem; }
+}
+
+/* Skills section */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  align-items: center;
+  justify-items: center;
+}
+
+.skill-card {
+  width: 160px;
+  height: 120px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: rgba(255,255,255,0.9);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  font-family: 'Poppins', sans-serif;
+}
+.skill-card:hover { transform: translateY(-6px); box-shadow: 0 8px 30px rgba(0,0,0,0.45); }
+.skill-card span { font-weight: 600; font-size: 0.95rem; }
+
+@media (max-width: 900px){
+  .skills-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .skill-card { width: 46%; height: 92px; }
+}

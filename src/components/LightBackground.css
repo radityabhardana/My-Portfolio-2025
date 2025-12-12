@@ -1,0 +1,12 @@
+:root{--bg1:#0b0b0b;--bg2:#0a0417;--accent1:rgba(82,39,255,0.75);--accent2:rgba(255,157,253,0.18);} .home-bg-fallback{position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:1; display:block; overflow:hidden;background:linear-gradient(120deg,var(--bg1) 0%, rgba(10,4,23,0.8) 40%, rgba(0,0,0,0.65) 100%);} .home-bg-fallback .gradient-overlay{position:absolute; inset:0; background:radial-gradient(circle at 15% 40%, rgba(82,39,255,0.12), transparent 14%), radial-gradient(circle at 85% 60%, rgba(255,157,253,0.06), transparent 18%);} .home-bg-fallback .texture{position:absolute; inset:0; background-image:radial-gradient(circle at 50% 20%, rgba(255,255,255,0.02), transparent 6%), linear-gradient(180deg, rgba(255,255,255,0.006), rgba(0,0,0,0.02)); mix-blend-mode:overlay; opacity:0.9;}
++
++/* Subtle movement to give some life without GPU-heavy effects */
++.home-bg-fallback::before{content:""; position:absolute; left:-20%; top:-10%; width:140%; height:140%; background:linear-gradient(90deg, rgba(82,39,255,0.06), rgba(255,157,253,0.03), rgba(177,158,239,0.02)); transform:rotate(6deg); animation: slide 18s linear infinite;}
++@keyframes slide{0%{transform:translateX(-2%) rotate(6deg);}50%{transform:translateX(2%) rotate(6deg);}100%{transform:translateX(-2%) rotate(6deg);}}
++
++/* Make sure this is hidden on larger screens so LiquidEther shows */
++@media (min-width: 900px){ .home-bg-fallback{display:none;} }
++
++/* On very small screens keep a bit less opacity */
++@media (max-width: 420px){ .home-bg-fallback{opacity:0.95} }
++

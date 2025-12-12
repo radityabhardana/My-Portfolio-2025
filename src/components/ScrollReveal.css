@@ -1,0 +1,27 @@
+.scroll-reveal {
+  margin: 12px 0; /* reduce vertical spacing so section doesn't grow too tall */
+}
+
+.scroll-reveal-text {
+  font-size: clamp(1.6rem, 4vw, 3rem);
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.word {
+  display: inline-block;
+}
+
+/* smaller body text variant for paragraph content */
+.scroll-reveal-text.body {
+  font-size: 1.05rem; /* matches about text scale */
+  font-weight: 400;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.95);
+}
+
+/* default word state (not-yet-revealed): muted gray, no blur */
+.scroll-reveal .word {
+  color: rgba(255,255,255,0.55);
+  filter: none;
+}
