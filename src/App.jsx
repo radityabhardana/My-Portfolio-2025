@@ -829,6 +829,8 @@ export default function App() {
               style={{
                 maxWidth: isSmallScreen ? "100%" : "55%",
                 marginTop: "5rem",
+                textAlign: isSmallScreen ? "center" : "left",
+                padding: isSmallScreen ? "0 20px" : "0",
               }}
             >
               <SplitText
@@ -843,7 +845,7 @@ export default function App() {
                 to={{ opacity: 1, y: 0 }}
                 threshold={0.15}
                 rootMargin="-100px"
-                textAlign="left"
+                textAlign={isSmallScreen ? "center" : "left"}
                 onLetterAnimationComplete={handleAnimationComplete}
               />
               <div
