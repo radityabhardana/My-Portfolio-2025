@@ -12,8 +12,7 @@ const skills = [
   { id: 9, name: 'PHP', icon: SiPhp, color: '#777bb4' },
   { id: 10, name: 'Python', icon: SiPython, color: '#3776ab' },
   { id: 11, name: 'C++', icon: SiCplusplus, color: '#00599c' },
-  { id: 12, name: 'Vite', icon: SiVite, color: '#646cff' },
-  { id: 13, name: 'Github', icon: SiGithub, color: '#ffffff' },
+  { id: 12, name: 'Github', icon: SiGithub, color: '#ffffff' },
 ];
 
 export default function SkillsCarousel() {

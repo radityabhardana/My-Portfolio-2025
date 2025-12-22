@@ -371,7 +371,7 @@ export default function App() {
             style={{
               color: "white",
               fontFamily: "'Poppins', sans-serif",
-              fontSize: "5.5rem",
+              fontSize: isSmallScreen ? "3rem" : "5.5rem",
               fontWeight: 600,
               margin: 0,
             }}
@@ -388,6 +388,38 @@ export default function App() {
             showCursor={true}
             cursorCharacter="|"
           />
+          
+          {/* Mobile Profile Card - appears after TextType */}
+          {isSmallScreen && (
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "32px",
+                marginBottom: "32px",
+                zIndex: 120,
+              }}
+            >
+              <ProfileCard
+                name="Raditya Bagus Hardana"
+                title="Software Engineer"
+                handle="javicodes"
+                status="Online"
+                contactText="Contact Me"
+                avatarUrl="/img/bosganteng.png"
+                iconUrl="/img/tag_card.png"
+                iconSize="320%"
+                showUserInfo={false}
+                enableTilt={true}
+                behindGlowSize="10%"
+                behindGlowEnabled={true}
+                enableMobileTilt={false}
+                onContactClick={() => console.log("Contact clicked")}
+              />
+            </div>
+          )}
+          
           <p
             style={{
               color: "white",
@@ -403,7 +435,7 @@ export default function App() {
             ideas <br />
             to life through clean code and thoughtful design
           </p>
-          <div style={{ display: "flex", gap: "16.5px", marginTop: "16.5px" }}>
+          <div style={{ display: "flex", gap: "16.5px", marginTop: "16.5px", flexWrap: "wrap" }}>
             <div className="glass-card">
               <span style={{ fontSize: "1.1rem", marginRight: "11px" }}>
                 <i class="bi bi-geo-alt-fill"></i>
@@ -417,7 +449,7 @@ export default function App() {
               <span>Ready to work</span>
             </div>
           </div>
-          <div style={{ display: "flex", gap: "16.5px", marginTop: "27.5px" }}>
+          <div style={{ display: "flex", gap: "16.5px", marginTop: "27.5px", flexWrap: "wrap" }}>
             <button className="btn-primary">
               <i class="bi bi-arrow-right" style={{ marginRight: "10px" }}></i>
               Hire Me
@@ -477,43 +509,35 @@ export default function App() {
             </div>
           </div>
         </div>
-        <div
-          className="home-profile"
-          style={
-            isSmallScreen
-              ? {
-                  position: "relative",
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                  marginTop: "24px",
-                  zIndex: 120,
-                }
-              : {
-                  position: "fixed",
-                  top: "20%",
-                  right: "10%",
-                  zIndex: 100,
-                }
-          }
-        >
-          <ProfileCard
-            name="Raditya Bagus Hardana"
-            title="Software Engineer"
-            handle="javicodes"
-            status="Online"
-            contactText="Contact Me"
-            avatarUrl="/img/bosganteng.png"
-            iconUrl="/img/tag_card.png"
-            iconSize="320%"
-            showUserInfo={false}
-            enableTilt={true}
-            behindGlowSize="10%"
-            behindGlowEnabled={true}
-            enableMobileTilt={false}
-            onContactClick={() => console.log("Contact clicked")}
-          />
-        </div>
+        {/* Desktop Profile Card - fixed position */}
+        {!isSmallScreen && (
+          <div
+            className="home-profile"
+            style={{
+              position: "fixed",
+              top: "20%",
+              right: "10%",
+              zIndex: 100,
+            }}
+          >
+            <ProfileCard
+              name="Raditya Bagus Hardana"
+              title="Software Engineer"
+              handle="javicodes"
+              status="Online"
+              contactText="Contact Me"
+              avatarUrl="/img/bosganteng.png"
+              iconUrl="/img/tag_card.png"
+              iconSize="320%"
+              showUserInfo={false}
+              enableTilt={true}
+              behindGlowSize="10%"
+              behindGlowEnabled={true}
+              enableMobileTilt={false}
+              onContactClick={() => console.log("Contact clicked")}
+            />
+          </div>
+        )}
 
         <div
           className="home-bg-wrapper"
@@ -660,9 +684,15 @@ export default function App() {
 
         <div
           className="about-content"
-          style={{ display: "flex", alignItems: "flex-start", gap: "20px", marginBottom: "40px" }}
+          style={{ 
+            display: "flex", 
+            alignItems: "flex-start", 
+            gap: "20px", 
+            marginBottom: "40px",
+            flexDirection: isSmallScreen ? "column" : "row"
+          }}
         >
-          <div className="about-left" style={{ maxWidth: "55%", marginTop:"5rem" }}>
+          <div className="about-left" style={{ maxWidth: isSmallScreen ? "100%" : "55%", marginTop:"5rem" }}>
             <SplitText
               text={"Building Meaningful Digital Experiences"}
               tag="h2"
@@ -710,18 +740,20 @@ export default function App() {
               </ScrollReveal>
             </div>
           </div>
-          <div
-            className="about-content-right"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              maxWidth: "40%",
-              height: "auto",
-            }}
-          >
-            <DecayCard />
-          </div>
+          {!isSmallScreen && (
+            <div
+              className="about-content-right"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                maxWidth: "40%",
+                height: "auto",
+              }}
+            >
+              <DecayCard />
+            </div>
+          )}
         </div>
 
         <div style={{ width: "100%", height: "80px", display: "flex", alignItems: "center", marginTop: "100px" }}>
