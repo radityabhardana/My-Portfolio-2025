@@ -117,6 +117,7 @@ export default function App() {
   const skillsRef = useRef(null);
   const [activeNavIndex, setActiveNavIndex] = useState(0);
   const scrollTimeoutRef = useRef(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const aboutEl = aboutSectionRef.current;
@@ -282,9 +283,10 @@ export default function App() {
                 width: "calc(100% - 32px)",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center",
+                justifyContent: "space-between",
                 textDecoration: "none",
-                background: "linear-gradient(180deg, rgba(0,0,0,0.65), rgba(0,0,0,0.3))",
+                background:
+                  "linear-gradient(180deg, rgba(0,0,0,0.65), rgba(0,0,0,0.3))",
                 borderRadius: "10px",
                 padding: "8px 12px",
               }
@@ -305,29 +307,136 @@ export default function App() {
               }
         }
       >
+        {isSmallScreen ? (
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            style={{
+              background: "none",
+              border: "none",
+              color: "white",
+              fontSize: "24px",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "8px",
+            }}
+          >
+            <i className="bi bi-list"></i>
+          </button>
+        ) : (
           <GooeyNav
-          items={items}
+            items={items}
             particleCount={isSmallScreen ? 3 : 15}
-          particleDistances={[90, 10]}
-          particleR={100}
-          activeIndex={activeNavIndex}
-          onActiveChange={(idx) => {
-            setActiveNavIndex(idx);
-            const href = items[idx]?.href;
-            if (href && href.startsWith("#")) {
-              const el = document.querySelector(href);
-              if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-            }
-          }}
-          animationTime={600}
-          timeVariance={300}
-          colors={[1, 2, 3, 1, 2, 3, 1, 4]}
-        />
+            particleDistances={[90, 10]}
+            particleR={100}
+            activeIndex={activeNavIndex}
+            onActiveChange={(idx) => {
+              setActiveNavIndex(idx);
+              const href = items[idx]?.href;
+              if (href && href.startsWith("#")) {
+                const el = document.querySelector(href);
+                if (el)
+                  el.scrollIntoView({ behavior: "smooth", block: "start" });
+              }
+            }}
+            animationTime={600}
+            timeVariance={300}
+            colors={[1, 2, 3, 1, 2, 3, 1, 4]}
+          />
+        )}
       </div>
+
+      {/* Mobile Menu Overlay */}
+      {isSmallScreen && isMobileMenuOpen && (
+        <div
+          style={{
+            position: "fixed",
+            top: "60px",
+            left: 0,
+            right: 0,
+            zIndex: 350,
+            background:
+              "linear-gradient(180deg, rgba(0,0,0,0.95), rgba(0,0,0,0.85))",
+            backdropFilter: "blur(10px)",
+            borderBottom: "1px solid rgba(82, 39, 255, 0.2)",
+            padding: "20px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "12px",
+            animation: "slideDown 0.3s ease-out",
+          }}
+        >
+          <style>
+            {`
+              @keyframes slideDown {
+                from {
+                  opacity: 0;
+                  transform: translateY(-20px);
+                }
+                to {
+                  opacity: 1;
+                  transform: translateY(0);
+                }
+              }
+            `}
+          </style>
+          {items.map((item, idx) => (
+            <button
+              key={idx}
+              onClick={() => {
+                setActiveNavIndex(idx);
+                const href = item.href;
+                if (href && href.startsWith("#")) {
+                  const el = document.querySelector(href);
+                  if (el)
+                    el.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+                setIsMobileMenuOpen(false);
+              }}
+              style={{
+                background:
+                  activeNavIndex === idx
+                    ? "rgba(82, 39, 255, 0.3)"
+                    : "transparent",
+                border: "1px solid rgba(82, 39, 255, 0.2)",
+                color: "white",
+                padding: "12px 16px",
+                borderRadius: "8px",
+                fontSize: "1rem",
+                fontFamily: "'Poppins', sans-serif",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+                textAlign: "left",
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.background = "rgba(82, 39, 255, 0.2)";
+              }}
+              onMouseLeave={(e) => {
+                if (activeNavIndex !== idx) {
+                  e.target.style.background = "transparent";
+                }
+              }}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Spacer for menu opening */}
+      {isSmallScreen && isMobileMenuOpen && (
+        <div style={{ height: "calc(12 * 44px)", pointerEvents: "none" }}></div>
+      )}
 
       {/* Banner Section - Fixed */}
       <div
-        style={{ width: "100%", height: "100vh", position: "relative" }}
+        style={{
+          width: "100%",
+          height: isSmallScreen ? "auto" : "100vh",
+          minHeight: isSmallScreen ? "100vh" : "auto",
+          position: "relative",
+        }}
         id="home"
       >
         <div
@@ -340,7 +449,7 @@ export default function App() {
                   top: "auto",
                   transform: "none",
                   zIndex: 10,
-                  paddingTop: "28px",
+                  paddingTop: "100px",
                   paddingBottom: "8px",
                   margin: "0 16px",
                 }
@@ -388,7 +497,7 @@ export default function App() {
             showCursor={true}
             cursorCharacter="|"
           />
-          
+
           {/* Mobile Profile Card - appears after TextType */}
           {isSmallScreen && (
             <div
@@ -419,7 +528,7 @@ export default function App() {
               />
             </div>
           )}
-          
+
           <p
             style={{
               color: "white",
@@ -427,6 +536,7 @@ export default function App() {
               fontSize: "1.1rem",
               fontWeight: 200,
               margin: "11px 0px",
+              textAlign: isSmallScreen ? "center" : "left",
             }}
           >
             I create beutiful, function, and user-centerd digital experiences.{" "}
@@ -435,21 +545,37 @@ export default function App() {
             ideas <br />
             to life through clean code and thoughtful design
           </p>
-          <div style={{ display: "flex", gap: "16.5px", marginTop: "16.5px", flexWrap: "wrap" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: "16.5px",
+              marginTop: "16.5px",
+              flexWrap: "wrap",
+            }}
+          >
             <div className="glass-card">
               <span style={{ fontSize: "1.1rem", marginRight: "11px" }}>
                 <i class="bi bi-geo-alt-fill"></i>
               </span>
               <span>Based in Indonesia</span>
             </div>
-            <div className="glass-card">
-              <span style={{ fontSize: "1.1rem", marginRight: "11px" }}>
-                <i class="bi bi-briefcase-fill"></i>
-              </span>
-              <span>Ready to work</span>
-            </div>
+            {!isSmallScreen && (
+              <div className="glass-card">
+                <span style={{ fontSize: "1.1rem", marginRight: "11px" }}>
+                  <i class="bi bi-briefcase-fill"></i>
+                </span>
+                <span>Ready to work</span>
+              </div>
+            )}
           </div>
-          <div style={{ display: "flex", gap: "16.5px", marginTop: "27.5px", flexWrap: "wrap" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: "16.5px",
+              marginTop: "27.5px",
+              flexWrap: "wrap",
+            }}
+          >
             <button className="btn-primary">
               <i class="bi bi-arrow-right" style={{ marginRight: "10px" }}></i>
               Hire Me
@@ -494,7 +620,7 @@ export default function App() {
               >
                 <i class="bi bi-github"></i>
               </a>
-           
+
               <a
                 href="https://www.instagram.com/zxlyn_16/"
                 target="_blank"
@@ -503,9 +629,14 @@ export default function App() {
               >
                 <i class="bi bi-instagram"></i>
               </a>
-              <a href="https://wa.me/628892274986" target="_blank" rel="noopener noreferrer" className="social-icon">
-                  <i class="bi bi-whatsapp"></i>
-                </a>
+              <a
+                href="https://wa.me/628892274986"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-icon"
+              >
+                <i class="bi bi-whatsapp"></i>
+              </a>
             </div>
           </div>
         </div>
@@ -554,22 +685,22 @@ export default function App() {
           {/* render heavy LiquidEther on desktop — use CSS-only fallback on small screens */}
           {!isSmallScreen ? (
             <LiquidEther
-            className="home-bg"
-            colors={["#5227FF", "#FF9FFC", "#B19EEF"]}
-            mouseForce={20}
-            cursorSize={100}
-            isViscous={false}
-            viscous={30}
-            iterationsViscous={liquidIterationsViscous}
-            iterationsPoisson={liquidIterationsPoisson}
-            resolution={liquidResolution}
-            isBounce={false}
-            autoDemo={liquidAutoDemo}
-            autoSpeed={0.5}
-            autoIntensity={liquidAutoIntensity}
-            takeoverDuration={0.25}
-            autoResumeDelay={3000}
-            autoRampDuration={0.6}
+              className="home-bg"
+              colors={["#5227FF", "#FF9FFC", "#B19EEF"]}
+              mouseForce={20}
+              cursorSize={100}
+              isViscous={false}
+              viscous={30}
+              iterationsViscous={liquidIterationsViscous}
+              iterationsPoisson={liquidIterationsPoisson}
+              resolution={liquidResolution}
+              isBounce={false}
+              autoDemo={liquidAutoDemo}
+              autoSpeed={0.5}
+              autoIntensity={liquidAutoIntensity}
+              takeoverDuration={0.25}
+              autoResumeDelay={3000}
+              autoRampDuration={0.6}
             />
           ) : (
             <LightBackground className="home-bg-fallback" />
@@ -609,14 +740,13 @@ export default function App() {
         </div>
       </div>
 
-
-
       {/* About Section */}
       <div
         ref={aboutSectionRef}
         style={{
           width: "100%",
-          height: "100vh",
+          height: isSmallScreen ? "auto" : "100vh",
+          minHeight: isSmallScreen ? "auto" : "100vh",
           backgroundColor: "#000000d5",
           position: "relative",
           zIndex: 200,
@@ -624,148 +754,169 @@ export default function App() {
           flexDirection: "column",
           justifyContent: "flex-start",
           paddingTop: "80px",
-          padding: "80px 35.2px",
+          // padding: "100px 35.2px",
+         
         }}
         id="about"
       >
         <div style={{ maxWidth: 1200, margin: "0 auto", width: "100%" }}>
-        <div
-          style={{
-            marginBottom: "22px",
-            display: "flex",
-            alignItems: "center",
-            gap: "22px",
-          }}
-        >
           <div
             style={{
-              width: "61.6px",
-              height: "61.6px",
-              background:
-                "linear-gradient(135deg, rgba(82, 39, 255, 0.2), rgba(157, 78, 221, 0.2))",
-              border: "1px solid rgba(82, 39, 255, 0.3)",
-              borderRadius: "15.4px",
+              marginBottom: "22px",
               display: "flex",
               alignItems: "center",
-              justifyContent: "center",
-              color: "rgba(82, 39, 255, 0.8)",
-              backdropFilter: "blur(10px)",
-              fontSize: "26.4px",
+              gap: "22px",
+               marginTop: "60px",
             }}
           >
-            <BiUser size={28} />
-          </div>
-          <div>
-            <h2
-              ref={aboutHeadingRef}
-              style={{
-                color: "white",
-                fontFamily: "'Poppins', sans-serif",
-                fontSize: "2.75rem",
-                fontWeight: 700,
-                margin: 0,
-              }}
-            >
-              About
-            </h2>
-            <p
-              style={{
-                color: "rgba(255, 255, 255, 0.6)",
-                fontFamily: "'Poppins', sans-serif",
-                fontSize: "0.99rem",
-                fontWeight: 400,
-                margin: "6px 0 0 0",
-              }}
-            >
-              Get to know me and my journey
-            </p>
-          </div>
-        </div>
-
-        <div
-          className="about-content"
-          style={{ 
-            display: "flex", 
-            alignItems: "flex-start", 
-            gap: "20px", 
-            marginBottom: "40px",
-            flexDirection: isSmallScreen ? "column" : "row"
-          }}
-        >
-          <div className="about-left" style={{ maxWidth: isSmallScreen ? "100%" : "55%", marginTop:"5rem" }}>
-            <SplitText
-              text={"Building Meaningful Digital Experiences"}
-              tag="h2"
-              className=""
-              delay={60}
-              duration={0.6}
-              ease="power3.out"
-              splitType="chars"
-              from={{ opacity: 0, y: 24 }}
-              to={{ opacity: 1, y: 0 }}
-              threshold={0.15}
-              rootMargin="-100px"
-              textAlign="left"
-              marginTop="1rem"
-              onLetterAnimationComplete={handleAnimationComplete}
-            />
             <div
               style={{
-                fontSize: "1.3rem",
-                marginTop: "20px",
-                lineHeight: "1.7",
-              }}
-            >
-              <ScrollReveal
-                tag="div"
-                textClassName="body"
-                enableBlur={false}
-                baseOpacity={0.95}
-                baseRotation={2}
-                rotationEnd="top 60%"
-                wordAnimationEnd="top 30%"
-              >
-                {"I'm a creative front-end developer passionate about building modern and responsive web experiences. My journey began with a love for design and evolved into a deep curiosity for how the web works — combining logic with creativity to bring ideas to life."}
-              </ScrollReveal>
-              <ScrollReveal
-                tag="div"
-                textClassName="body"
-                enableBlur={false}
-                baseOpacity={0.95}
-                baseRotation={2}
-                rotationEnd="top 60%"
-                wordAnimationEnd="top 30%"
-              >
-                  {"When I'm not coding, I enjoy learning new technologies and exploring better ways to make the web faster and more engaging. I believe in continuous learning, attention to detail, and the power of clean, meaningful design. I also like Web3 and blockchain."}
-              </ScrollReveal>
-            </div>
-          </div>
-          {!isSmallScreen && (
-            <div
-              className="about-content-right"
-              style={{
+                width: "61.6px",
+                height: "61.6px",
+                background:
+                  "linear-gradient(135deg, rgba(82, 39, 255, 0.2), rgba(157, 78, 221, 0.2))",
+                border: "1px solid rgba(82, 39, 255, 0.3)",
+                borderRadius: "15.4px",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                maxWidth: "40%",
-                height: "auto",
+                color: "rgba(82, 39, 255, 0.8)",
+                backdropFilter: "blur(10px)",
+                fontSize: "26.4px",
               }}
             >
-              <DecayCard />
+              <BiUser size={28} />
+            </div>
+            <div>
+              <h2
+                ref={aboutHeadingRef}
+                style={{
+                  color: "white",
+                  fontFamily: "'Poppins', sans-serif",
+                  fontSize: "2.75rem",
+                  fontWeight: 700,
+                  margin: 0,
+                }}
+              >
+                About
+              </h2>
+              <p
+                style={{
+                  color: "rgba(255, 255, 255, 0.6)",
+                  fontFamily: "'Poppins', sans-serif",
+                  fontSize: "0.99rem",
+                  fontWeight: 400,
+                  margin: "6px 0 0 0",
+                }}
+              >
+                Get to know me and my journey
+              </p>
+            </div>
+          </div>
+
+          <div
+            className="about-content"
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              gap: "20px",
+              marginBottom: "40px",
+              flexDirection: isSmallScreen ? "column" : "row",
+            }}
+          >
+            <div
+              className="about-left"
+              style={{
+                maxWidth: isSmallScreen ? "100%" : "55%",
+                marginTop: "5rem",
+              }}
+            >
+              <SplitText
+                text={"Building Meaningful Digital Experiences"}
+                tag="h2"
+                className=""
+                delay={60}
+                duration={0.6}
+                ease="power3.out"
+                splitType="chars"
+                from={{ opacity: 0, y: 24 }}
+                to={{ opacity: 1, y: 0 }}
+                threshold={0.15}
+                rootMargin="-100px"
+                textAlign="left"
+                onLetterAnimationComplete={handleAnimationComplete}
+              />
+              <div
+                style={{
+                  fontSize: "1.3rem",
+                  marginTop: "20px",
+                  lineHeight: "1.7",
+                }}
+              >
+                <ScrollReveal
+                  tag="div"
+                  textClassName="body"
+                  enableBlur={false}
+                  baseOpacity={0.95}
+                  baseRotation={2}
+                  rotationEnd="top 60%"
+                  wordAnimationEnd="top 30%"
+                >
+                  {
+                    "I'm a creative front-end developer passionate about building modern and responsive web experiences. My journey began with a love for design and evolved into a deep curiosity for how the web works — combining logic with creativity to bring ideas to life."
+                  }
+                </ScrollReveal>
+                <ScrollReveal
+                  tag="div"
+                  textClassName="body"
+                  enableBlur={false}
+                  baseOpacity={0.95}
+                  baseRotation={2}
+                  rotationEnd="top 60%"
+                  wordAnimationEnd="top 30%"
+                >
+                  {
+                    "When I'm not coding, I enjoy learning new technologies and exploring better ways to make the web faster and more engaging. I believe in continuous learning, attention to detail, and the power of clean, meaningful design. I also like Web3 and blockchain."
+                  }
+                </ScrollReveal>
+              </div>
+            </div>
+            {!isSmallScreen && (
+              <div
+                className="about-content-right"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  maxWidth: "40%",
+                  height: "auto",
+                }}
+              >
+                <DecayCard />
+              </div>
+            )}
+          </div>
+
+          {!isSmallScreen && (
+            <div
+              style={{
+                width: "100%",
+                height: "80px",
+                display: "flex",
+                alignItems: "center",
+                marginTop: "100px",
+              }}
+            >
+              <CurvedLoop
+                marqueeText="Raditya ✦ Bagus ✦ Hardana ✦"
+                speed={3}
+                curveAmount={100}
+                direction="right"
+                interactive={true}
+                className="custom-text-style"
+              />
             </div>
           )}
-        </div>
-
-        <div style={{ width: "100%", height: "80px", display: "flex", alignItems: "center", marginTop: "100px" }}>
-          <CurvedLoop
-            marqueeText="Raditya ✦ Bagus ✦ Hardana ✦"
-            speed={3}
-            curveAmount={100}
-            direction="right"
-            interactive={true}
-            className="custom-text-style"
-          />
-        </div>
         </div>
       </div>
 
@@ -773,14 +924,14 @@ export default function App() {
       <section
         style={{
           width: "100%",
-          height: "100vh",
+          height: isSmallScreen ? "auto" : "100vh",
           background:
             "linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.5))",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          padding: "66px 35.2px",
+          padding: isSmallScreen ? "40px 20px 80px" : "66px 35.2px",
         }}
         id="skills"
       >
@@ -855,26 +1006,26 @@ export default function App() {
         }}
         id="certificates"
       >
-        <Certificates />
+        <Certificates isSmallScreen={isSmallScreen} />
       </section>
 
       {/* Projects Section */}
       <section
         style={{
           width: "100%",
-          minHeight: "100vh",
+          minHeight: isSmallScreen ? "auto" : "100vh",
           background:
             "linear-gradient(180deg, rgba(0,0,0,0.3), rgba(0,0,0,0.0))",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          padding: "88px 35.2px",
+          padding: isSmallScreen ? "60px 20px 100px" : "88px 35.2px",
         }}
         id="projects"
       >
         <div style={{ maxWidth: 1200, margin: "0 auto", width: "100%" }}>
-          <Projects />
+          <Projects isSmallScreen={isSmallScreen} />
         </div>
       </section>
 

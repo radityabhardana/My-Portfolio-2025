@@ -83,7 +83,7 @@ const sampleProjects = [
   },
 ];
 
-export default function Projects({ projects = sampleProjects }) {
+export default function Projects({ projects = sampleProjects, isSmallScreen = false }) {
   const [selectedProject, setSelectedProject] = useState(null);
   const [filter, setFilter] = useState('all');
   const [visibleCount, setVisibleCount] = useState(3);
@@ -209,11 +209,22 @@ export default function Projects({ projects = sampleProjects }) {
       {/* Modal */}
       {selectedProject && (
         <div
-          className="project-modal"
+          className={`project-modal ${selectedProject ? 'open' : ''}`}
           onClick={() => setSelectedProject(null)}
           role="dialog"
           aria-modal="true"
         >
+          {/* Mobile back button (easy to tap) */}
+          {isSmallScreen && (
+            <button
+              className="project-modal-back"
+              onClick={() => setSelectedProject(null)}
+              aria-label="Back"
+            >
+              ← Back
+            </button>
+          )}
+
           <div className="project-modal-content" onClick={(e) => e.stopPropagation()}>
             <button
               className="project-modal-close"

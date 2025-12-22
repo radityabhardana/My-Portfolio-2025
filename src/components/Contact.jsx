@@ -42,13 +42,13 @@ export default function Contact() {
     <section 
       style={{
         width: '100%',
-        height: '100vh',
+        height: window && window.innerWidth < 900 ? 'auto' : '100vh',
         background: 'linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.5))',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: '0 35.2px',
+        padding: window && window.innerWidth < 900 ? '40px 20px 80px' : '0 35.2px',
       }} 
       id='contact'
     >

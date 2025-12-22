@@ -10,7 +10,7 @@ const sampleCertificates = [
   { id: 4, title: 'Oscar — WebDev Competition', issuer: 'Oscar Program', date: '2024', image: '/certificate/oscar.jpg', url: '#', category: 'Website' },
 ];
 
-export default function Certificates({ certificates = sampleCertificates }) {
+export default function Certificates({ certificates = sampleCertificates, isSmallScreen = false }) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(null);
   const [filter, setFilter] = useState('all');
@@ -127,6 +127,11 @@ export default function Certificates({ certificates = sampleCertificates }) {
       {/* Modal */}
       {open && selected && (
         <div className={`cert-modal ${open ? 'open' : ''}`} onClick={closePreview} role="dialog" aria-modal="true">
+          {isSmallScreen && (
+            <button className="cert-modal-back" onClick={closePreview} aria-label="Back">
+              ← Back
+            </button>
+          )}
           <div className="cert-modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="cert-modal-close" onClick={closePreview} aria-label="Close preview">
               ✕
