@@ -70,6 +70,17 @@ const sampleProjects = [
     githubUrl: '#',
     featured: false,
   },
+  {
+    id: 7,
+    title: 'Ticket Reservation',
+    description: 'Modern portfolio website with smooth animations, interactive UI components, and responsive design.',
+    image: '/project/tiketbus.png ',
+    category: 'Fullstack',
+    tech: ['Vb.Net'],
+    liveUrl: '#',
+    githubUrl: '#',
+    featured: false,
+  },
 ];
 
 export default function Projects({ projects = sampleProjects }) {

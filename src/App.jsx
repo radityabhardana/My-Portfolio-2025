@@ -17,7 +17,6 @@ import {
 } from "react-icons/si";
 import { BiUser } from "react-icons/bi";
 import { HiSparkles } from "react-icons/hi2";
-import MusicCard from "./components/MusicCard.jsx";
 import ScrollReveal from "./components/ScrollReveal.jsx";
 import SplitText from "./components/SplitText.jsx";
 import SkillsCarousel from "./components/SkillsCarousel.jsx";
@@ -586,14 +585,7 @@ export default function App() {
         </div>
       </div>
 
-      {/* Now Playing / Music Card */}
-      <MusicCard
-        albumArt="/img/cover.png"
-        title="Palace"
-        artist="ADTurnUp"
-        audioSrc="/file/Palace (Slowed + Reverb) - ADTurnUp.mp3"
-        initiallyPlaying={false}
-      />
+
 
       {/* About Section */}
       <div
