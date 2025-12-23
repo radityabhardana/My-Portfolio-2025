@@ -13,7 +13,7 @@ const sampleProjects = [
     tech: ['Html','Bootstrap'],
     liveUrl: '#',
     githubUrl: '#',
-    featured: true,
+    featured: false,
   },
   {
     id: 2,
@@ -35,7 +35,7 @@ const sampleProjects = [
     tech: ['Html', 'Css', 'Js'],
     liveUrl: '#',
     githubUrl: '#',
-    featured: true,
+    featured: false,
   },
   {
     id: 4,

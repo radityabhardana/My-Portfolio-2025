@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
+import { BiEnvelope } from 'react-icons/bi';
 import './Contact.css';
 
 // EmailJS configuration (set in .env.local for Vite):
@@ -128,7 +129,7 @@ export default function Contact() {
             backdropFilter: 'blur(10px)',
             fontSize: '26.4px'
           }}>
-            ✉️
+            <BiEnvelope size={28} />
           </div>
           <h1 className="section-title" style={{
             color: 'white',

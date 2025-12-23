@@ -580,12 +580,27 @@ export default function App() {
               flexWrap: "wrap",
             }}
           >
-            <button className="btn-primary">
-              <i class="bi bi-arrow-right" style={{ marginRight: "10px" }}></i>
+            <button
+              className="btn-primary"
+              onClick={() => {
+                const el = document.getElementById('contact');
+                if (el) {
+                  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  setActiveNavIndex(5);
+                  setIsMobileMenuOpen(false);
+                  // focus the name input after scroll animation completes
+                  setTimeout(() => {
+                    const nameInput = document.getElementById('from_name');
+                    if (nameInput) nameInput.focus();
+                  }, 600);
+                }
+              }}
+            >
+              <i className="bi bi-arrow-right" style={{ marginRight: "10px" }}></i>
               Hire Me
             </button>
             <button className="btn-secondary" onClick={handleDownloadCV}>
-              <i class="bi bi-download" style={{ marginRight: "10px" }}></i>
+              <i className="bi bi-download" style={{ marginRight: "10px" }}></i>
               Download CV
             </button>
           </div>
