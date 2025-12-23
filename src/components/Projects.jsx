@@ -7,18 +7,18 @@ const sampleProjects = [
   {
     id: 1,
     title: 'Petani Kode Cloning',
-    description: 'A full-stack e-commerce platform with React, Node.js, and MongoDB. Features include product filtering, shopping cart, and payment integration.',
+    description: 'Full-stack e-commerce clone built with React, Node.js, and MongoDB — includes product catalog, search & filters, shopping cart, and a demo payment flow.',
     image: '/project/petanikode.png',
     category: 'Frontend',
-    tech: ['Html', 'Css', 'Js', 'Bootstrap'],
+    tech: ['Html','Bootstrap'],
     liveUrl: '#',
     githubUrl: '#',
     featured: true,
   },
   {
     id: 2,
-    title: 'Portofolio Website',
-    description: 'A collaborative task management application built with React and Firebase. Real-time updates and team collaboration features.',
+    title: 'Personal Portfolio',
+    description: 'Responsive portfolio site built with React to showcase projects, skills, and contact info; includes animated hero and modal project previews.',
     image: '/project/portfolio.png',
     category: 'Frontend',
     tech: ['React', 'Html', 'Css', 'Js'],
@@ -29,10 +29,10 @@ const sampleProjects = [
   {
     id: 3,
     title: 'News Website',
-    description: 'Interactive weather application with real-time data, maps integration, and location-based forecasts.',
-    image: '/Project/websiteberita.png',
+    description: 'News aggregator template with article listing, category filtering, and client-side search — built with HTML, CSS and vanilla JavaScript.',
+    image: '/project/websiteberita.png',
     category: 'Frontend',
-    tech: ['Html', 'Css', 'Js', 'Bootstrap'],
+    tech: ['Html', 'Css', 'Js'],
     liveUrl: '#',
     githubUrl: '#',
     featured: true,
@@ -40,7 +40,7 @@ const sampleProjects = [
   {
     id: 4,
     title: 'Space engineering Website',
-    description: 'Modern portfolio website with smooth animations, interactive UI components, and responsive design.',
+    description: 'Space-themed portfolio site featuring responsive layouts, subtle animations, and interactive UI components for showcasing work.',
     image: '/project/aether.png',
     category: 'Frontend',
     tech: ['Html', 'Css', 'Js'],
@@ -51,7 +51,7 @@ const sampleProjects = [
   {
     id: 5,
     title: 'Ui/Ux Space Engineering',
-    description: 'Modern portfolio website with smooth animations, interactive UI components, and responsive design.',
+    description: 'UI/UX case study and Figma prototype focusing on space-themed dashboards, user flows and visual design systems.',
     image: '/project/figma.png',
     category: 'Design',
     tech: ['Figma'],
@@ -62,26 +62,45 @@ const sampleProjects = [
   {
     id: 6,
     title: 'Inventory System',
-    description: 'Modern portfolio website with smooth animations, interactive UI components, and responsive design.',
+    description: 'Inventory management app with CRUD, stock tracking, and admin dashboards — implemented with PHP & MySQL and basic auth.',
     image: '/project/inventory.png',
     category: 'Fullstack',
-    tech: ['Php', 'MySql', 'Html', 'Css', 'Js'],
+    tech: ['MySql', 'Html', 'Css', 'Js', 'Php'],
     liveUrl: '#',
-    githubUrl: '#',
+    githubUrl: 'https://github.com/radityabhardana/Inventory-System',
     featured: false,
   },
   {
     id: 7,
     title: 'Ticket Reservation',
-    description: 'Modern portfolio website with smooth animations, interactive UI components, and responsive design.',
-    image: '/project/tiketbus.png ',
+    description: 'Ticket reservation system with booking flow and seat selection; demonstrates reservation logic and basic backend handling.',
+    image: '/project/tiketbus.png',
     category: 'Fullstack',
-    tech: ['Vb.Net'],
+    tech: ['Vb'],
     liveUrl: '#',
-    githubUrl: '#',
+    githubUrl: 'https://github.com/radityabhardana/Pemesanan-Tiket-Bus-VBNET',
+    featured: false,
+  },
+  {
+    id: 8,
+    title: 'Fashion E-commerce',
+    description: 'Ticket reservation system with booking flow and seat selection; demonstrates reservation logic and basic backend handling.',
+    image: '/project/urban.png',
+    category: 'Frontend',
+    tech: ['Html', 'Css', 'Js'],
+    liveUrl: 'urbancore.netlify.app',
+    githubUrl: 'https://github.com/radityabhardana/Urban-Core-Fashion-Website',
     featured: false,
   },
 ];
+
+const normalizeUrl = (url) => {
+  if (!url) return url;
+  if (url === '#') return url;
+  // allow absolute URLs (http(s), mailto, protocol-relative)
+  if (/^(https?:|mailto:|\/\/)/i.test(url)) return url;
+  return `https://${url}`;
+};
 
 export default function Projects({ projects = sampleProjects, isSmallScreen = false }) {
   const [selectedProject, setSelectedProject] = useState(null);
@@ -164,7 +183,7 @@ export default function Projects({ projects = sampleProjects, isSmallScreen = fa
                   <div className="project-links">
                     {project.liveUrl && project.liveUrl !== '#' && (
                       <a
-                        href={project.liveUrl}
+                        href={normalizeUrl(project.liveUrl)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="project-link"
@@ -176,7 +195,7 @@ export default function Projects({ projects = sampleProjects, isSmallScreen = fa
                     )}
                     {project.githubUrl && project.githubUrl !== '#' && (
                       <a
-                        href={project.githubUrl}
+                        href={normalizeUrl(project.githubUrl)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="project-link"
@@ -256,7 +275,7 @@ export default function Projects({ projects = sampleProjects, isSmallScreen = fa
                 <div className="project-modal-links">
                   {selectedProject.liveUrl && selectedProject.liveUrl !== '#' && (
                     <a
-                      href={selectedProject.liveUrl}
+                      href={normalizeUrl(selectedProject.liveUrl)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="project-modal-btn primary"
@@ -267,7 +286,7 @@ export default function Projects({ projects = sampleProjects, isSmallScreen = fa
                   )}
                   {selectedProject.githubUrl && selectedProject.githubUrl !== '#' && (
                     <a
-                      href={selectedProject.githubUrl}
+                      href={normalizeUrl(selectedProject.githubUrl)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="project-modal-btn secondary"
