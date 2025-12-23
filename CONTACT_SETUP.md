@@ -96,6 +96,40 @@ Edit di `Contact.css`:
 - Ubah `#5227FF` untuk primary color
 - Ubah `#9D4EDD` untuk secondary color
 
+## Environment (.env.local)
+
+Untuk keamanan dan kenyamanan, tambahkan kredensial EmailJS ke file lokal yang tidak di-commit.
+
+1. Buat file `.env.local` di root project dengan isi berikut (ganti placeholder):
+
+```
+VITE_EMAILJS_SERVICE_ID=your_service_id_here
+VITE_EMAILJS_TEMPLATE_ID=your_template_id_here
+VITE_EMAILJS_PUBLIC_KEY=your_public_key_here
+```
+
+2. Pastikan file ini ada di `.gitignore` (sudah otomatis ditambahkan pada repo).
+3. Restart server dev (`npm run dev`) setelah menambahkan variabel.
+
+> Catatan: Vite hanya mengekspos variabel yang diawali `VITE_` ke kode klien.
+>
+> **Optional: Auto-reply (Acknowledgement to sender)**
+>
+> - Jika ingin mengirim email konfirmasi otomatis ke pengirim (mis. "Terima kasih telah menghubungi saya"), buat template baru di EmailJS dan gunakan variable `to_email` (sebagai destination) dan `to_name` di template.
+> - Tambahkan `VITE_EMAILJS_AUTO_TEMPLATE_ID=template_xyz` ke file `.env.local` dan restart dev server.
+> - Contoh template (Auto-reply):
+>
+>   Subject: Terima kasih, {{to_name}} — Pesan Anda diterima
+>
+>   Body:
+>
+>   <p>Hai {{to_name}},</p>
+>   <p>Terima kasih telah menghubungi saya. Saya akan membalas secepatnya.</p>
+>   <p>Salam,</p>
+>   <p>Your Name</p>
+>
+> - Pastikan template menggunakan `{{to_email}}` sebagai tujuan pengiriman (atau atur field "To" di template ke `{{to_email}}`) sehingga EmailJS mengirimkan email ke alamat pengirim.
+> - Jika auto-reply gagal, periksa EmailJS dashboard → Email logs untuk pesan error atau cek console browser untuk detail (dev-only banner akan menampilkan status percobaan auto-reply).
 ## Troubleshooting
 
 ### Email tidak terkirim

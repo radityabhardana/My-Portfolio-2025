@@ -1,33 +1,92 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
 import './Contact.css';
 
-// Initialize EmailJS with your public key
-emailjs.init('YOUR_PUBLIC_KEY'); // Replace with your actual public key
+// EmailJS configuration (set in .env.local for Vite):
+// VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, VITE_EMAILJS_PUBLIC_KEY
+const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || '';
+const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || '';
+const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '';
+// Optional: template used to send an automated acknowledgement back to the user
+// Set VITE_EMAILJS_AUTO_TEMPLATE_ID in .env.local if you want an auto-reply sent
+const AUTO_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_AUTO_TEMPLATE_ID || ''; 
 
 export default function Contact() {
   const formRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [autoReplyStatus, setAutoReplyStatus] = useState(null);
+
+  useEffect(() => {
+    if (PUBLIC_KEY) {
+      emailjs.init(PUBLIC_KEY);
+    } else {
+      console.warn('EmailJS public key missing. Set VITE_EMAILJS_PUBLIC_KEY in your environment.');
+    }
+  }, []);
+
+  // Helper: ensure a hidden input with `name` exists on the form and set its value
+  const ensureHiddenInput = (formEl, name, value) => {
+    if (!formEl) return;
+    let el = formEl.querySelector(`input[name="${name}"]`);
+    if (el) {
+      el.value = value;
+    } else {
+      const i = document.createElement('input');
+      i.type = 'hidden';
+      i.name = name;
+      i.value = value;
+      formEl.appendChild(i);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
-    setSuccess(false);
+    setSuccess(false); 
 
     try {
-      const result = await emailjs.sendForm(
-        'YOUR_SERVICE_ID', // Replace with your service ID
-        'YOUR_TEMPLATE_ID', // Replace with your template ID
-        formRef.current,
-        'YOUR_PUBLIC_KEY' // Replace with your public key
-      );
+      if (!SERVICE_ID || !TEMPLATE_ID) {
+        setError('Email service is not configured. Please set VITE_EMAILJS_SERVICE_ID and VITE_EMAILJS_TEMPLATE_ID.');
+        setLoading(false);
+        return;
+      }
+
+      // Read form field values so we can populate reply_to/subject and optionally send an auto-reply
+      const formEl = formRef.current;
+      const fd = new FormData(formEl);
+      const fromName = (fd.get('from_name') || '').toString();
+      const fromEmail = (fd.get('from_email') || '').toString();
+
+      // Ensure template can access reply_to and subject fields
+      ensureHiddenInput(formEl, 'reply_to', fromEmail);
+      ensureHiddenInput(formEl, 'subject', `New message from ${fromName || 'Visitor'}`);
+
+      const result = await emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, formEl);
 
       if (result.status === 200) {
+        // Optional: send an automated acknowledgement back to the user if configured
+        if (AUTO_TEMPLATE_ID && fromEmail) {
+          try {
+            // Send variables matching typical EmailJS auto-reply templates
+            const autoRes = await emailjs.send(SERVICE_ID, AUTO_TEMPLATE_ID, {
+              from_email: fromEmail,
+              name: fromName || 'Visitor',
+              title: (fd.get('subject') || `Message from ${fromName}`),
+              message: (fd.get('message') || '')
+            });
+            console.info('Auto-reply sent:', autoRes);
+            if (import.meta.env.DEV) setAutoReplyStatus('sent');
+          } catch (autoErr) {
+            console.error('Auto-reply failed:', autoErr);
+            if (import.meta.env.DEV) setAutoReplyStatus(`failed: ${autoErr && (autoErr.text || autoErr.message) ? (autoErr.text || autoErr.message) : 'unknown'}`);
+          }
+        }
+
         setSuccess(true);
-        formRef.current.reset();
+        formEl.reset();
         setTimeout(() => setSuccess(false), 5000);
       }
     } catch (err) {
