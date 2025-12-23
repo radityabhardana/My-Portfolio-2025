@@ -224,7 +224,7 @@ export default function App() {
     };
   }, []);
 
-  // Blur the banner elements as the About section scrolls into view
+  // Blur the banner elements as the About section scrolls into view (lighter blur + no heavy blurs on small screens)
   useEffect(() => {
     const about = aboutSectionRef.current;
     const home = document.getElementById("home");
@@ -236,6 +236,9 @@ export default function App() {
 
     if (!about || !home) return;
 
+    // Skip heavy blurs on small screens — keep effect light on desktop
+    if (isSmallScreen) return;
+
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: about,
@@ -245,17 +248,18 @@ export default function App() {
       },
     });
 
+    // lighter blur values to reduce paint cost and visual heaviness
     if (main)
-      tl.to(main, { filter: "blur(6px)", opacity: 0.86, ease: "none" }, 0);
+      tl.to(main, { filter: "blur(3px)", opacity: 0.92, ease: "none" }, 0);
     if (profile)
-      tl.to(profile, { filter: "blur(5px)", opacity: 0.9, ease: "none" }, 0);
+      tl.to(profile, { filter: "blur(2px)", opacity: 0.95, ease: "none" }, 0);
     if (bg)
       tl.to(
         bg,
-        { filter: "blur(6px) saturate(80%)", opacity: 0.95, ease: "none" },
+        { filter: "blur(2px) saturate(90%)", opacity: 0.97, ease: "none" },
         0
       );
-    tl.to(home, { filter: "blur(3px)", opacity: 0.98, ease: "none" }, 0);
+    tl.to(home, { filter: "blur(1px)", opacity: 0.99, ease: "none" }, 0);
 
     return () => {
       try {
@@ -265,7 +269,7 @@ export default function App() {
         tl.kill && tl.kill();
       } catch (e) {}
     };
-  }, []);
+  }, [isSmallScreen]);
 
   return (
     <div style={{ width: "100%" }}>
@@ -285,8 +289,8 @@ export default function App() {
                 alignItems: "center",
                 justifyContent: "space-between",
                 textDecoration: "none",
-                background:
-                  "linear-gradient(180deg, rgba(0,0,0,0.65), rgba(0,0,0,0.3))",
+                // removed gradient for mobile — use solid background to keep contrast without gradient
+                background: "rgba(0,0,0,0.65)",
                 borderRadius: "10px",
                 padding: "8px 12px",
               }
@@ -356,8 +360,8 @@ export default function App() {
             left: 0,
             right: 0,
             zIndex: 350,
-            background:
-              "linear-gradient(180deg, rgba(0,0,0,0.95), rgba(0,0,0,0.85))",
+            // removed gradient for mobile overlay — use solid to keep legibility
+            background: "rgba(0,0,0,0.95)",
             backdropFilter: "blur(10px)",
             borderBottom: "1px solid rgba(82, 39, 255, 0.2)",
             padding: "20px",
@@ -760,21 +764,17 @@ export default function App() {
         id="about"
       >
         <div style={{ maxWidth: 1200, margin: "0 auto", width: "100%" }}>
-          <div
-            style={{
+          <div className="section-header" style={{
               marginBottom: "22px",
               display: "flex",
               alignItems: "center",
               gap: "22px",
                marginTop: "60px",
-            }}
-          >
-            <div
-              style={{
+            }}>
+            <div className="section-icon" style={{
                 width: "61.6px",
                 height: "61.6px",
-                background:
-                  "linear-gradient(135deg, rgba(82, 39, 255, 0.2), rgba(157, 78, 221, 0.2))",
+                background: isSmallScreen ? "transparent" : "linear-gradient(135deg, rgba(82, 39, 255, 0.2), rgba(157, 78, 221, 0.2))",
                 border: "1px solid rgba(82, 39, 255, 0.3)",
                 borderRadius: "15.4px",
                 display: "flex",
@@ -783,32 +783,26 @@ export default function App() {
                 color: "rgba(82, 39, 255, 0.8)",
                 backdropFilter: "blur(10px)",
                 fontSize: "26.4px",
-              }}
-            >
+              }}>
               <BiUser size={28} />
             </div>
             <div>
-              <h2
-                ref={aboutHeadingRef}
-                style={{
+              <h2 ref={aboutHeadingRef} className="section-title" style={{
                   color: "white",
                   fontFamily: "'Poppins', sans-serif",
                   fontSize: "2.75rem",
                   fontWeight: 700,
                   margin: 0,
-                }}
-              >
+                }}>
                 About
               </h2>
-              <p
-                style={{
+              <p className="section-subtitle" style={{
                   color: "rgba(255, 255, 255, 0.6)",
                   fontFamily: "'Poppins', sans-serif",
                   fontSize: "0.99rem",
                   fontWeight: 400,
                   margin: "6px 0 0 0",
-                }}
-              >
+                }}>
                 Get to know me and my journey
               </p>
             </div>
@@ -927,8 +921,7 @@ export default function App() {
         style={{
           width: "100%",
           height: isSmallScreen ? "auto" : "100vh",
-          background:
-            "linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.5))",
+          background: isSmallScreen ? "transparent" : "linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.5))",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
@@ -946,12 +939,10 @@ export default function App() {
               marginBottom: "55px",
             }}
           >
-            <div
-              style={{
+            <div className="section-icon" style={{
                 width: "61.6px",
                 height: "61.6px",
-                background:
-                  "linear-gradient(135deg, rgba(82, 39, 255, 0.2), rgba(157, 78, 221, 0.2))",
+                background: isSmallScreen ? "transparent" : "linear-gradient(135deg, rgba(82, 39, 255, 0.2), rgba(157, 78, 221, 0.2))",
                 border: "1px solid rgba(82, 39, 255, 0.3)",
                 borderRadius: "15.4px",
                 display: "flex",
@@ -960,13 +951,11 @@ export default function App() {
                 color: "rgba(82, 39, 255, 0.8)",
                 backdropFilter: "blur(10px)",
                 fontSize: "26.4px",
-              }}
-            >
+              }}>
               <HiSparkles size={28} />
             </div>
             <div>
-              <h1
-                style={{
+              <h1 className="section-title" style={{
                   color: "white",
                   fontFamily: "'Poppins', sans-serif",
                   fontSize: "2.75rem",
@@ -998,8 +987,7 @@ export default function App() {
         style={{
           width: "100%",
           minHeight: "100vh",
-          background:
-            "linear-gradient(180deg, rgba(0,0,0,0.5), rgba(0,0,0,0.3))",
+          background: isSmallScreen ? "transparent" : "linear-gradient(180deg, rgba(0,0,0,0.5), rgba(0,0,0,0.3))",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
@@ -1016,8 +1004,7 @@ export default function App() {
         style={{
           width: "100%",
           minHeight: isSmallScreen ? "auto" : "100vh",
-          background:
-            "linear-gradient(180deg, rgba(0,0,0,0.3), rgba(0,0,0,0.0))",
+          background: isSmallScreen ? "transparent" : "linear-gradient(180deg, rgba(0,0,0,0.3), rgba(0,0,0,0.0))",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",

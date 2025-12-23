@@ -238,6 +238,12 @@
     font-size: 1rem;
   }
 
+  /* Override inline header styles on small screens */
+  #contact .section-icon { width: 44px !important; height: 44px !important; font-size: 20px !important; }
+  #contact h1.section-title { font-size: 1.55rem !important; }
+  #contact .section-subtitle { font-size: 0.95rem !important; }
+}
+
   .form-group label {
     font-size: 0.9rem;
   }

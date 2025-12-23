@@ -22,8 +22,8 @@ const sampleProjects = [
     image: '/project/portfolio.png',
     category: 'Frontend',
     tech: ['React', 'Html', 'Css', 'Js'],
-    liveUrl: '#',
-    githubUrl: '#',
+    liveUrl: 'https://radityabagushardana.netlify.app/',
+    githubUrl: 'https://github.com/radityabhardana/My-Portfolio-2025',
     featured: false,
   },
   {

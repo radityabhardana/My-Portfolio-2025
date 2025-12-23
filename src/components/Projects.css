@@ -53,27 +53,40 @@
 
 .projects-subtitle {
   color: rgba(255, 255, 255, 0.6);
-  font-size: 1rem;
+  font-size: 1.1rem;
   margin: 0;
   font-family: 'Poppins', sans-serif;
   font-weight: 400;
 }
 
+@media (max-width: 900px) {
+  .projects-icon { width: 48px; height: 48px; }
+  .projects-main-title { font-size: 2rem; }
+  .projects-subtitle { font-size: 0.95rem; }
+}
+
+@media (max-width: 480px) {
+  .projects-icon { width: 40px; height: 40px; }
+  .projects-main-title { font-size: 1.6rem; }
+  .projects-subtitle { font-size: 0.9rem; }
+  .projects-filters { margin-bottom: 36px; }
+}
+
 /* Filter Tabs */
 .projects-filters {
   display: flex;
-  gap: 12px;
-  margin-bottom: 48px;
+  gap: 13.2px;
+  margin-bottom: 52.8px;
   flex-wrap: wrap;
 }
 
 .projects-filters .filter-btn {
-  padding: 10px 18px;
+  padding: 11px 19.8px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
+  border-radius: 11px;
   color: rgba(255, 255, 255, 0.7);
-  font-size: 0.95rem;
+  font-size: 1.045rem;
   font-weight: 500;
   font-family: 'Poppins', sans-serif;
   cursor: pointer;

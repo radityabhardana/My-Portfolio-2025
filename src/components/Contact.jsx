@@ -43,7 +43,8 @@ export default function Contact() {
       style={{
         width: '100%',
         height: window && window.innerWidth < 900 ? 'auto' : '100vh',
-        background: 'linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.5))',
+        // remove heavy gradient on mobile for better legibility
+        background: (typeof window !== 'undefined' && window.innerWidth < 900) ? 'transparent' : 'linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.5))',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -54,11 +55,11 @@ export default function Contact() {
     >
       <div style={{ maxWidth: 1000, margin: '0 auto', width: '100%' }}>
         {/* Header */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '22px', marginBottom: '55px' }}>
-          <div style={{
+        <div className="section-header" style={{ display: 'flex', alignItems: 'center', gap: '22px', marginBottom: '55px' }}>
+          <div className="section-icon" style={{
             width: '61.6px',
             height: '61.6px',
-            background: 'linear-gradient(135deg, rgba(82, 39, 255, 0.2), rgba(157, 78, 221, 0.2))',
+            background: (typeof window !== 'undefined' && window.innerWidth < 900) ? 'transparent' : 'linear-gradient(135deg, rgba(82, 39, 255, 0.2), rgba(157, 78, 221, 0.2))',
             border: '1px solid rgba(82, 39, 255, 0.3)',
             borderRadius: '15.4px',
             display: 'flex',
@@ -70,7 +71,7 @@ export default function Contact() {
           }}>
             ✉️
           </div>
-          <h1 style={{
+          <h1 className="section-title" style={{
             color: 'white',
             fontFamily: "'Poppins', sans-serif",
             fontSize: '2.75rem',
@@ -114,7 +115,7 @@ export default function Contact() {
               </div>
               <div className="contact-text">
                 <h4>Email</h4>
-                <a href="mailto:rexnabagus@gmail.com">radityabhardana@gmail.com</a>
+                <a href="mailto:rexnabagus@gmail.com">rexnabagus@gmail.com</a>
               </div>
             </div>
 

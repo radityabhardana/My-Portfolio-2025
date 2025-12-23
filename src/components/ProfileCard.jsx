@@ -43,9 +43,18 @@ const ProfileCardComponent = ({
 
   const enterTimerRef = useRef(null);
   const leaveRafRef = useRef(null);
+  const isTouchDevice = useRef(false);
+
+  // Detect if device supports touch
+  useEffect(() => {
+    isTouchDevice.current = ('ontouchstart' in window) ||
+                            (navigator.maxTouchPoints > 0) ||
+                            (navigator.msMaxTouchPoints > 0);
+  }, []);
 
   const tiltEngine = useMemo(() => {
-    if (!enableTilt) return null;
+    // Disable tilt on touch devices
+    if (!enableTilt || isTouchDevice.current) return null;
 
     let rafId = null;
     let running = false;
@@ -154,7 +163,7 @@ const ProfileCardComponent = ({
         lastTs = 0;
       }
     };
-  }, [enableTilt]);
+  }, [enableTilt, isTouchDevice]);
 
   const getOffsets = (evt, el) => {
     const rect = el.getBoundingClientRect();
@@ -236,6 +245,11 @@ const ProfileCardComponent = ({
 
     const shell = shellRef.current;
     if (!shell) return;
+
+    // Skip pointer tracking on touch devices
+    if (isTouchDevice.current) {
+      return;
+    }
 
     const pointerMoveHandler = handlePointerMove;
     const pointerEnterHandler = handlePointerEnter;

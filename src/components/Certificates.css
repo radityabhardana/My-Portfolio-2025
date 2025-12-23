@@ -51,6 +51,39 @@
   background-clip: text;
 }
 
+@media (max-width:900px){
+  .cert-icon{ width:52px; height:52px }
+  .cert-main-title{ font-size:2.05rem }
+  .cert-subtitle{ font-size:0.98rem }
+}
+@media (max-width:480px){
+  .cert-icon{ width:44px; height:44px }
+  .cert-main-title{ font-size:1.65rem }
+  .cert-subtitle{ font-size:0.9rem }
+}
+
+/* Mobile contrast fixes */
+@media (max-width: 900px) {
+  .cert-card {
+    background: rgba(0,0,0,0.55) !important;
+    color: #fff !important;
+    isolation: isolate;
+    backdrop-filter: none !important;
+  }
+  .cert-card-title,
+  .cert-issuer-name,
+  .cert-category-tag {
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+  }
+  .cert-card .cert-overlay,
+  .cert-card .pc-shine,
+  .cert-card * {
+    mix-blend-mode: normal !important;
+    background-blend-mode: normal !important;
+  }
+}
+
 .cert-subtitle {
   color: rgba(255, 255, 255, 0.6);
   font-size: 1.1rem;
@@ -209,6 +242,10 @@
   justify-content: space-between;
 }
 
+.cert-card-title {
+  color: rgba(255, 255, 255, 0.95);
+}
+
 .cert-category-tag {
   display: inline-block;
   background: linear-gradient(135deg, rgba(82, 39, 255, 0.15), rgba(157, 78, 221, 0.1));
@@ -222,18 +259,14 @@
   width: fit-content;
 }
 
-.cert-card-title {
-  color: white;
-  font-size: 1.045rem;
-  font-weight: 700;
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  line-height: 1.4;
-  transition: color 0.3s ease;
-}
-
-.cert-card:hover .cert-card-title {
-  color: rgba(255, 255, 255, 1);
+/* Mobile: remove gradients for better readability and performance */
+@media (max-width: 900px) {
+  .cert-icon { background: transparent !important; border-color: rgba(82,39,255,0.12); }
+  .filter-btn.active { background: rgba(82,39,255,0.12) !important; box-shadow: none; }
+  .cert-card { background: rgba(255,255,255,0.01) !important; backdrop-filter: none !important; }
+  .cert-image-container { background: transparent !important; }
+  .cert-overlay { background: rgba(82,39,255,0.06) !important; backdrop-filter: none !important; }
+  .cert-category-tag { background: rgba(82,39,255,0.06) !important; border-color: rgba(82,39,255,0.12) !important; }
 }
 
 .cert-issuer-name {
@@ -520,6 +553,7 @@
 
   .cert-card-title {
     font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.95);
   }
 
   .cert-modal-title {
