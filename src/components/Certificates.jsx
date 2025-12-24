@@ -8,6 +8,7 @@ const sampleCertificates = [
   { id: 2, title: 'IDN — WebDev Competition ', issuer: 'IDN Academy', date: '2025', image: '/certificate/idn.jpg', url: '#', category: 'Website' },
   { id: 3, title: 'Microvac — Seminar', issuer: 'Microvac', date: '2024', image: '/certificate/microvac.jpg', url: '#', category: 'Others' },
   { id: 4, title: 'Oscar — WebDev Competition', issuer: 'Oscar Program', date: '2025', image: '/certificate/oscar.jpg', url: '#', category: 'Website' },
+  { id: 5, title: 'Binance — AWS Blockchain Node Runner', issuer: 'Binance Program', date: '2025', image: '/certificate/binance1.png', url: '#', category: 'Web3' },
 ];
 
 export default function Certificates({ certificates = sampleCertificates, isSmallScreen = false }) {
