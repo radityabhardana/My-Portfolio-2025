@@ -13,8 +13,8 @@
   aspect-ratio: 100 / 12;
   overflow: visible;
   display: block;
-  /* responsive text sizing to avoid being too small on certain hosts/browsers */
-  font-size: clamp(2rem, 4.5vw, 6rem);
+  /* Use px-based clamp so text size is consistent regardless of root font-size or host resets */
+  font-size: clamp(18px, 4.5vw, 64px);
   fill: #ffffff;
   user-select: none;
   -moz-user-select: none;

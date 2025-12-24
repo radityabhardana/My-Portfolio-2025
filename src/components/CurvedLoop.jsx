@@ -55,6 +55,15 @@ const CurvedLoop = ({
       if (measureRef.current) {
         const len = measureRef.current.getComputedTextLength();
         setSpacing(len);
+        // debug: log values when hosted on vercel (helps diagnose deployed size issues)
+        try {
+          if (typeof window !== 'undefined' && window.location && window.location.hostname.includes('vercel.app')) {
+            const svgEl = measureRef.current.ownerSVGElement || measureRef.current.closest('svg');
+            const computedFontSize = svgEl ? window.getComputedStyle(svgEl).fontSize : 'unknown';
+            // eslint-disable-next-line no-console
+            console.debug('[CurvedLoop] measurement:', { len, pathLength: pathRef.current ? (pathRef.current.getTotalLength ? pathRef.current.getTotalLength() : null) : null, computedFontSize });
+          }
+        } catch (e) {}
       }
     };
 
