@@ -37,7 +37,38 @@ const CurvedLoop = ({
   const ready = spacing > 0;
 
   useEffect(() => {
-    if (measureRef.current) setSpacing(measureRef.current.getComputedTextLength());
+    const calc = () => {
+      if (measureRef.current) {
+        const len = measureRef.current.getComputedTextLength();
+        setSpacing(len);
+      }
+    };
+
+    // initial calc
+    calc();
+
+    // Recalculate after webfonts are ready - prevents incorrect measurements when fallback font is used initially
+    let cancelled = false;
+    if (typeof document !== 'undefined' && document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        if (!cancelled) calc();
+      }).catch(() => {});
+      // Try one delayed recalculation as a safety net for environments without FontFaceSet events
+      const t = setTimeout(() => { if (!cancelled) calc(); }, 800);
+
+      // Recalc on window resize too
+      window.addEventListener('resize', calc);
+
+      return () => {
+        cancelled = true;
+        clearTimeout(t);
+        window.removeEventListener('resize', calc);
+      };
+    }
+
+    // Fallback: listen for resize only
+    window.addEventListener('resize', calc);
+    return () => window.removeEventListener('resize', calc);
   }, [text, className]);
 
   useEffect(() => {
@@ -114,7 +145,20 @@ const CurvedLoop = ({
       onPointerLeave={endDrag}
     >
       <svg className="curved-loop-svg" viewBox="0 0 1440 120">
-        <text ref={measureRef} xmlSpace="preserve" style={{ visibility: 'hidden', opacity: 0, pointerEvents: 'none' }}>
+        <text
+          ref={measureRef}
+          xmlSpace="preserve"
+          style={{
+            visibility: 'hidden',
+            opacity: 0,
+            pointerEvents: 'none',
+            /* Match the visible text font so measurements are accurate once webfonts load */
+            fontFamily: "'Poppins', sans-serif",
+            fontWeight: 700,
+            fontSize: 'inherit',
+            letterSpacing: '0.02em',
+          }}
+        >
           {text}
         </text>
         <defs>
