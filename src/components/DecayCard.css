@@ -8,7 +8,9 @@
   width: 100%;
   height: 100%;
   display: block;
-  will-change: transform;
+  /* avoid forcing a raster layer which can make SVG with filters look blurry */
+  will-change: auto;
+  backface-visibility: hidden;
 }
 
 .card-text {

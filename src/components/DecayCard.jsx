@@ -69,7 +69,7 @@ const DecayCard = ({ width = 300, height = 400, image = '/img/radit.jpg',  child
       );
       imgValues.displacementScale = lerp(
         imgValues.displacementScale,
-        map(cursorTravelledDistance, 0, 200, 0, 400),
+        map(cursorTravelledDistance, 0, 200, 0, 80),
         0.06
       );
 
@@ -93,7 +93,7 @@ const DecayCard = ({ width = 300, height = 400, image = '/img/radit.jpg',  child
   return (
     <div className="content" style={{ width: `${width}px`, height: `${height}px` }} ref={svgRef}>
       <svg viewBox="-60 -75 720 900" preserveAspectRatio="xMidYMid slice" className="svg">
-        <filter id="imgFilter">
+        <filter id="imgFilter" filterUnits="userSpaceOnUse" x="0" y="0" width="600" height="750" filterRes="600 750">
           <feTurbulence
             type="turbulence"
             baseFrequency="0.015"
