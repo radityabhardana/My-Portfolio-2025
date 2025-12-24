@@ -226,7 +226,8 @@ export default function Contact() {
                   <i className="bi bi-whatsapp"></i>
                 </a>
               </div>
-            </div> 
+            </div>
+            <p className="contact-copyright">© 2025 Raditya Bagus Hardana</p>
           </div>
 
           {/* Contact Form */}
@@ -335,7 +336,9 @@ export default function Contact() {
                 </a>
               </div>
             </div>
-          </form> 
+
+            <p className="contact-copyright mobile">© 2025 Raditya Bagus Hardana</p>
+          </form>  
         </div>
       </div>
     </section>
