@@ -220,8 +220,9 @@ body {
 
 /* Mobile: remove intense gradients for better legibility and performance */
 @media (max-width: 900px) {
+  /* keep a simplified gradient on mobile for legibility but avoid an opaque flat color */
   .btn-primary {
-    background: rgba(82, 39, 255, 0.95) !important;
+    background: linear-gradient(135deg, #5227FF 0%, #9D4EDD 100%) !important;
   }
   .btn-primary:hover { box-shadow: none; }
   .social-icon:hover {

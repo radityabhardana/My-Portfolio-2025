@@ -3,7 +3,7 @@ import { gsap } from 'gsap';
 
 import './DecayCard.css';
 
-const DecayCard = ({ width = 300, height = 400, image = '/img/radit.jpg ',  children }) => {
+const DecayCard = ({ width = 300, height = 400, image = '/img/radit.jpg',  children }) => {
   const svgRef = useRef(null);
   const displacementMapRef = useRef(null);
   const cursor = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });

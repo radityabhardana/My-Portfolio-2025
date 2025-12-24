@@ -247,4 +247,16 @@
   .form-group label {
     font-size: 0.9rem;
   }
+
+  /* Follow links mobile/desktop control */
+  .follow-mobile { display: none; }
+  .follow-mobile .follow-title { margin: 0 0 6.5px 0; color: rgba(255,255,255,0.7); font-family: 'Poppins', sans-serif; font-size: 0.99rem; font-weight: 500; }
+  .follow-mobile .follow-links { display: flex; gap: 16.5px; margin-top: 6px; }
+
+  .follow-desktop { display: block; }
+
+  @media (max-width: 900px) {
+    .follow-mobile { display: block; }
+    .follow-desktop { display: none; }
+  }
 }

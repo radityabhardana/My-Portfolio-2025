@@ -119,8 +119,9 @@ export default function Contact() {
           <div className="section-icon" style={{
             width: '61.6px',
             height: '61.6px',
-            background: (typeof window !== 'undefined' && window.innerWidth < 900) ? 'transparent' : 'linear-gradient(135deg, rgba(82, 39, 255, 0.2), rgba(157, 78, 221, 0.2))',
-            border: '1px solid rgba(82, 39, 255, 0.3)',
+            /* use a subtle translucent gradient on mobile for contrast */
+            background: (typeof window !== 'undefined' && window.innerWidth < 900) ? 'linear-gradient(135deg, rgba(82, 39, 255, 0.12), rgba(157, 78, 221, 0.12))' : 'linear-gradient(135deg, rgba(82, 39, 255, 0.2), rgba(157, 78, 221, 0.2))',
+            border: '1px solid rgba(82, 39, 255, 0.18)',
             borderRadius: '15.4px',
             display: 'flex',
             alignItems: 'center',
@@ -199,8 +200,8 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* Social Links */}
-            <div style={{ marginTop: '10px', paddingTop: '13px', borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
+            {/* Social Links (desktop) */}
+            <div className="follow-desktop" style={{ marginTop: '10px', paddingTop: '13px', borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
               <p style={{
                 color: 'rgba(255, 255, 255, 0.7)',
                 fontFamily: "'Poppins', sans-serif",
@@ -222,10 +223,10 @@ export default function Contact() {
                   <i className="bi bi-instagram"></i>
                 </a>
                 <a href="https://wa.me/628892274986" target="_blank" rel="noopener noreferrer" className="social-icon">
-                  <i class="bi bi-whatsapp"></i>
+                  <i className="bi bi-whatsapp"></i>
                 </a>
               </div>
-            </div>
+            </div> 
           </div>
 
           {/* Contact Form */}
@@ -309,7 +310,32 @@ export default function Contact() {
             }}>
               I respect your privacy. Your data won't be shared.
             </p>
-          </form>
+
+            {/* Follow Me (mobile-only) */}
+            <div className="follow-mobile" style={{ marginTop: '18px', paddingTop: '13px', borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
+              <p className="follow-title" style={{
+                color: 'rgba(255, 255, 255, 0.7)',
+                fontFamily: "'Poppins', sans-serif",
+                fontSize: '0.99rem',
+                fontWeight: 500,
+                margin: '0 0 6.5px 0'
+              }}>Follow Me</p>
+              <div className="follow-links" style={{ display: 'flex', gap: '16.5px' }}>
+                <a href="https://www.linkedin.com/in/raditya-hardana-962373382/" target="_blank" rel="noopener noreferrer" className="social-icon">
+                  <i className="bi bi-linkedin"></i>
+                </a>
+                <a href="https://github.com/radityabhardana" target="_blank" rel="noopener noreferrer" className="social-icon">
+                  <i className="bi bi-github"></i>
+                </a>
+                <a href="https://www.instagram.com/zxlyn_16/" target="_blank" rel="noopener noreferrer" className="social-icon">
+                  <i className="bi bi-instagram"></i>
+                </a>
+                <a href="https://wa.me/628892274986" target="_blank" rel="noopener noreferrer" className="social-icon">
+                  <i className="bi bi-whatsapp"></i>
+                </a>
+              </div>
+            </div>
+          </form> 
         </div>
       </div>
     </section>

@@ -5,9 +5,9 @@ import { BiAward } from 'react-icons/bi';
 
 const sampleCertificates = [
   { id: 1, title: 'Clevio — Workshop GameDev', issuer: 'Clevio', date: '2025', image: '/certificate/clevio.jpg', url: '#', category: 'Game' },
-  { id: 2, title: 'IDN — WebDev Competition ', issuer: 'IDN Academy', date: '2023', image: '/certificate/idn.jpg', url: '#', category: 'Website' },
-  { id: 3, title: 'Microvac — Seminar', issuer: 'Microvac', date: '2025', image: '/certificate/microvac.jpg', url: '#', category: 'Others' },
-  { id: 4, title: 'Oscar — WebDev Competition', issuer: 'Oscar Program', date: '2024', image: '/certificate/oscar.jpg', url: '#', category: 'Website' },
+  { id: 2, title: 'IDN — WebDev Competition ', issuer: 'IDN Academy', date: '2025', image: '/certificate/idn.jpg', url: '#', category: 'Website' },
+  { id: 3, title: 'Microvac — Seminar', issuer: 'Microvac', date: '2024', image: '/certificate/microvac.jpg', url: '#', category: 'Others' },
+  { id: 4, title: 'Oscar — WebDev Competition', issuer: 'Oscar Program', date: '2025', image: '/certificate/oscar.jpg', url: '#', category: 'Website' },
 ];
 
 export default function Certificates({ certificates = sampleCertificates, isSmallScreen = false }) {

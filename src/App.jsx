@@ -726,37 +726,39 @@ export default function App() {
           )}
         </div>
 
-        {/* Mouse Scroll Icon */}
-        <div
-          className="scroll-indicator"
-          style={{
-            position: "fixed",
-            bottom: "55px",
-            left: "50%",
-            transform: "translateX(-50%)",
-            zIndex: 10,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "11px",
-          }}
-        >
-          <div className="scroll-mouse">
-            <div className="scroll-wheel"></div>
-          </div>
-          <p
+        {/* Mouse Scroll Icon (visible only on Home) */}
+        {activeNavIndex === 0 && (
+          <div
+            className="scroll-indicator"
             style={{
-              color: "rgba(255, 255, 255, 0.7)",
-              fontFamily: "'Poppins', sans-serif",
-              fontSize: "0.99rem",
-              fontWeight: 500,
-              margin: 0,
-              letterSpacing: "1.1px",
+              position: "fixed",
+              bottom: "55px",
+              left: "50%",
+              transform: "translateX(-50%)",
+              zIndex: 10,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "11px",
             }}
           >
-            SCROLL
-          </p>
-        </div>
+            <div className="scroll-mouse">
+              <div className="scroll-wheel"></div>
+            </div>
+            <p
+              style={{
+                color: "rgba(255, 255, 255, 0.7)",
+                fontFamily: "'Poppins', sans-serif",
+                fontSize: "0.99rem",
+                fontWeight: 500,
+                margin: 0,
+                letterSpacing: "1.1px",
+              }}
+            >
+              SCROLL
+            </p>
+          </div>
+        )} 
       </div>
 
       {/* About Section */}
@@ -789,8 +791,9 @@ export default function App() {
             <div className="section-icon" style={{
                 width: "61.6px",
                 height: "61.6px",
-                background: isSmallScreen ? "transparent" : "linear-gradient(135deg, rgba(82, 39, 255, 0.2), rgba(157, 78, 221, 0.2))",
-                border: "1px solid rgba(82, 39, 255, 0.3)",
+                /* keep a light translucent gradient on mobile for contrast */
+                background: "linear-gradient(135deg, rgba(82, 39, 255, 0.12), rgba(157, 78, 221, 0.12))",
+                border: "1px solid rgba(82, 39, 255, 0.18)",
                 borderRadius: "15.4px",
                 display: "flex",
                 alignItems: "center",
@@ -957,8 +960,9 @@ export default function App() {
             <div className="section-icon" style={{
                 width: "61.6px",
                 height: "61.6px",
-                background: isSmallScreen ? "transparent" : "linear-gradient(135deg, rgba(82, 39, 255, 0.2), rgba(157, 78, 221, 0.2))",
-                border: "1px solid rgba(82, 39, 255, 0.3)",
+                /* keep a light translucent gradient on mobile for contrast */
+                background: "linear-gradient(135deg, rgba(82, 39, 255, 0.12), rgba(157, 78, 221, 0.12))",
+                border: "1px solid rgba(82, 39, 255, 0.18)",
                 borderRadius: "15.4px",
                 display: "flex",
                 alignItems: "center",
