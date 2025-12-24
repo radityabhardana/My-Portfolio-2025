@@ -19,6 +19,20 @@ const CurvedLoop = ({
   const pathRef = useRef(null);
   const [spacing, setSpacing] = useState(0);
   const [offset, setOffset] = useState(0);
+  const offsetRef = useRef(0);
+  const [pathLength, setPathLength] = useState(0);
+
+  // helper: set startOffset on the <textPath> using percentage when possible
+  const setStartOffsetFromPx = (px) => {
+    if (!textPathRef.current) return;
+    if (pathLength && pathLength > 0) {
+      const percent = (px / pathLength) * 100;
+      textPathRef.current.setAttribute('startOffset', percent + '%');
+    } else {
+      textPathRef.current.setAttribute('startOffset', px + 'px');
+    }
+  };
+
   const uid = useId();
   const pathId = `curve-${uid}`;
   const pathD = `M-100,40 Q500,${40 + curveAmount} 1540,40`;
@@ -59,6 +73,9 @@ const CurvedLoop = ({
       // Recalc on window resize too
       window.addEventListener('resize', calc);
 
+      // compute path length once SVG path is available (may depend on render timing)
+      if (pathRef.current) setPathLength(pathRef.current.getTotalLength());
+
       return () => {
         cancelled = true;
         clearTimeout(t);
@@ -68,6 +85,7 @@ const CurvedLoop = ({
 
     // Fallback: listen for resize only
     window.addEventListener('resize', calc);
+    if (pathRef.current) setPathLength(pathRef.current.getTotalLength());
     return () => window.removeEventListener('resize', calc);
   }, [text, className]);
 
@@ -75,32 +93,33 @@ const CurvedLoop = ({
     if (!spacing) return;
     if (textPathRef.current) {
       const initial = -spacing;
-      textPathRef.current.setAttribute('startOffset', initial + 'px');
+      offsetRef.current = initial;
       setOffset(initial);
+      setStartOffsetFromPx(initial);
     }
-  }, [spacing]);
+  }, [spacing, pathLength]);
 
   useEffect(() => {
     if (!spacing || !ready) return;
     let frame = 0;
     const step = () => {
-      if (!dragRef.current && textPathRef.current) {
+      if (!dragRef.current) {
         const delta = dirRef.current === 'right' ? speed : -speed;
-        const currentOffset = parseFloat(textPathRef.current.getAttribute('startOffset') || '0');
-        let newOffset = currentOffset + delta;
+        let newOffset = offsetRef.current + delta;
 
         const wrapPoint = spacing;
         if (newOffset <= -wrapPoint) newOffset += wrapPoint;
         if (newOffset > 0) newOffset -= wrapPoint;
 
-        textPathRef.current.setAttribute('startOffset', newOffset + 'px');
+        offsetRef.current = newOffset;
         setOffset(newOffset);
+        setStartOffsetFromPx(newOffset);
       }
       frame = requestAnimationFrame(step);
     };
     frame = requestAnimationFrame(step);
     return () => cancelAnimationFrame(frame);
-  }, [spacing, speed, ready]);
+  }, [spacing, speed, ready, pathLength]);
 
   const onPointerDown = e => {
     if (!interactive) return;
@@ -111,20 +130,20 @@ const CurvedLoop = ({
   };
 
   const onPointerMove = e => {
-    if (!interactive || !dragRef.current || !textPathRef.current) return;
+    if (!interactive || !dragRef.current) return;
     const dx = e.clientX - lastXRef.current;
     lastXRef.current = e.clientX;
     velRef.current = dx;
 
-    const currentOffset = parseFloat(textPathRef.current.getAttribute('startOffset') || '0');
-    let newOffset = currentOffset + dx;
+    let newOffset = offsetRef.current + dx;
 
     const wrapPoint = spacing;
     if (newOffset <= -wrapPoint) newOffset += wrapPoint;
     if (newOffset > 0) newOffset -= wrapPoint;
 
-    textPathRef.current.setAttribute('startOffset', newOffset + 'px');
+    offsetRef.current = newOffset;
     setOffset(newOffset);
+    setStartOffsetFromPx(newOffset);
   };
 
   const endDrag = () => {
