@@ -18,6 +18,9 @@ export default function Certificates({ certificates = sampleCertificates, isSmal
   const [filter, setFilter] = useState('all');
   const [visibleCount, setVisibleCount] = useState(2);
 
+  // track certificate images that failed to load so we can show an explicit UI placeholder
+  const [erroredIds, setErroredIds] = useState(() => new Set());
+
   // pinned certificate IDs (persisted to localStorage so pins survive reloads)
   const [pinnedIds, setPinnedIds] = useState(() => {
     try {
@@ -129,28 +132,41 @@ export default function Certificates({ certificates = sampleCertificates, isSmal
             >
               <div className="cert-card">
                 <div className="cert-image-container">
-                  <img
-                    src={c.image}
-                    alt={c.title}
-                    className="cert-image"
-                    loading="lazy"
-                    onError={(e) => {
-                      // avoid infinite loop if fallback also fails
-                      if (e.currentTarget.dataset.errored) return;
-                      e.currentTarget.dataset.errored = '1';
-                      // fallback to a bundled image that exists in the project
-                      e.currentTarget.src = '/img/cover.png';
-                      // log to help debugging missing files on deploy
-                      // eslint-disable-next-line no-console
-                      console.warn(`Certificate image failed to load: ${c.image}`);
-                    }}
-                  />
-                  <div className="cert-overlay">
-                    <div className="cert-overlay-content">
-                      <span className="cert-view-badge">View Details</span>
-                    </div>
-                  </div>
-                  <div className="cert-badge">{c.date}</div>
+          {erroredIds.has(c.id) ? (
+            <div className="cert-image cert-image-missing" role="img" aria-label={`Image unavailable for ${c.title}`}>
+              <div className="cert-missing-inner">Image unavailable</div>
+            </div>
+          ) : (
+            <img
+              src={c.image}
+              alt={c.title}
+              className="cert-image"
+              loading="lazy"
+              onError={(e) => {
+                // avoid infinite loop if fallback also fails
+                if (e.currentTarget.dataset.errored) return;
+                e.currentTarget.dataset.errored = '1';
+                // mark this certificate id as errored so we can render a visible placeholder
+                setErroredIds(prev => {
+                  const s = new Set(prev);
+                  s.add(c.id);
+                  return s;
+                });
+                // fallback to a bundled image that exists in the project
+                e.currentTarget.src = '/img/cover.png';
+                // log to help debugging missing files on deploy
+                // eslint-disable-next-line no-console
+                console.warn(`Certificate image failed to load: ${c.image}`);
+              }}
+            />
+          )}
+
+          <div className="cert-overlay">
+            <div className="cert-overlay-content">
+              <span className="cert-view-badge">View Details</span>
+            </div>
+          </div>
+          <div className="cert-badge">{c.date}</div>
                 </div>
 
                 <div className="cert-info">
@@ -203,7 +219,13 @@ export default function Certificates({ certificates = sampleCertificates, isSmal
             
             <div className="cert-modal-body">
               <div className="cert-modal-image">
-                <img src={selected.image} alt={selected.title} />
+                {selected && erroredIds.has(selected.id) ? (
+                  <div className="cert-image-missing cert-modal-missing" role="img" aria-label={`Image unavailable for ${selected.title}`}>
+                    <div className="cert-missing-inner">Image unavailable</div>
+                  </div>
+                ) : (
+                  <img src={selected.image} alt={selected.title} />
+                )}
               </div>
               
               <div className="cert-modal-text">
