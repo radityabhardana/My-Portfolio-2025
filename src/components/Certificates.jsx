@@ -4,11 +4,12 @@ import { FiExternalLink } from 'react-icons/fi';
 import { BiAward } from 'react-icons/bi';
 
 const sampleCertificates = [
-  { id: 1, title: 'Clevio — Workshop GameDev', issuer: 'Clevio', date: '2025', image: '/certificate/clevio.jpg', url: '#', category: 'Game' },
-  { id: 2, title: 'IDN — WebDev Competition ', issuer: 'IDN Academy', date: '2025', image: '/certificate/idn.jpg', url: '#', category: 'Website' },
+  { id: 1, title: 'Clevio — Workshop GameDev', issuer: 'Clevio', date: '2025', image: '/certificate/clevio.jpg', url: '#', category: 'Projects' },
+  { id: 2, title: 'IDN — WebDev Competition ', issuer: 'IDN Academy', date: '2025', image: '/certificate/idn.jpg', url: '#', category: 'Projects' },
   { id: 3, title: 'Microvac — Seminar', issuer: 'Microvac', date: '2024', image: '/certificate/microvac.jpg', url: '#', category: 'Others' },
-  { id: 4, title: 'Oscar — WebDev Competition', issuer: 'Oscar Program', date: '2025', image: '/certificate/oscar.jpg', url: '#', category: 'Website' },
-  { id: 5, title: 'Binance — AWS Blockchain Node Runner', issuer: 'Binance Program', date: '2025', image: '/certificate/binance1.png', url: '#', category: 'Web3' },
+  { id: 4, title: 'Oscar — WebDev Competition', issuer: 'Oscar Program', date: '2025', image: '/certificate/oscar.jpg', url: '#', category: 'Projects' },
+  { id: 5, title: 'Binance — AWS Blockchain Node Runner', issuer: 'Binance Program', date: '2025', image: '/certificate/binance1.png', url: '#', category: 'Certifications', pinned: true },
+  { id: 6, title: 'AWS — Machine Learning', issuer: 'AWS Skill Builder', date: '2025', image: '/certificate/aws1.png', url: '#', category: 'Certifications',  pinned: true },
 ];
 
 export default function Certificates({ certificates = sampleCertificates, isSmallScreen = false }) {
@@ -16,6 +17,39 @@ export default function Certificates({ certificates = sampleCertificates, isSmal
   const [selected, setSelected] = useState(null);
   const [filter, setFilter] = useState('all');
   const [visibleCount, setVisibleCount] = useState(2);
+
+  // pinned certificate IDs (persisted to localStorage so pins survive reloads)
+  const [pinnedIds, setPinnedIds] = useState(() => {
+    try {
+      const raw = localStorage.getItem('pinnedCertificates');
+      const saved = raw ? JSON.parse(raw) : [];
+      // Allow pins to be set directly in code by adding `pinned: true` on certificate objects
+      const fromCode = (certificates || []).filter(c => c.pinned).map(c => c.id);
+      // merge unique
+      return Array.from(new Set([...(saved || []), ...fromCode]));
+    } catch (e) {
+      // fallback: include code-pinned ids if localStorage read fails
+      try {
+        return (certificates || []).filter(c => c.pinned).map(c => c.id);
+      } catch (e2) {
+        return [];
+      }
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('pinnedCertificates', JSON.stringify(pinnedIds));
+    } catch (e) {}
+  }, [pinnedIds]);
+
+  const togglePin = useCallback((id) => {
+    setPinnedIds(prev => {
+      const exists = prev.includes(id);
+      if (exists) return prev.filter(x => x !== id);
+      return [id, ...prev];
+    });
+  }, []);
 
   useEffect(() => {
     if (open) {
@@ -40,6 +74,20 @@ export default function Certificates({ certificates = sampleCertificates, isSmal
 
   const filteredCerts = filter === 'all' ? certificates : certificates.filter(c => c.category === filter);
   const categories = ['all', ...new Set(certificates.map(c => c.category))];
+
+  // When showing 'all', show pinned certificates first (maintain relative order otherwise)
+  const displayedCerts = (() => {
+    const list = filteredCerts.slice();
+    if (filter === 'all' && pinnedIds && pinnedIds.length) {
+      list.sort((a, b) => {
+        const aPinned = pinnedIds.includes(a.id) ? 0 : 1;
+        const bPinned = pinnedIds.includes(b.id) ? 0 : 1;
+        if (aPinned !== bPinned) return aPinned - bPinned;
+        return 0;
+      });
+    }
+    return list;
+  })();
 
   return (
     <div className="cert-wrapper">
@@ -72,7 +120,7 @@ export default function Certificates({ certificates = sampleCertificates, isSmal
 
         {/* Grid of Certificates */}
         <div className="cert-grid-container">
-          {filteredCerts.slice(0, visibleCount).map((c, idx) => (
+          {displayedCerts.slice(0, visibleCount).map((c, idx) => (
             <div
               key={c.id}
               className="cert-card-wrapper"
@@ -81,7 +129,22 @@ export default function Certificates({ certificates = sampleCertificates, isSmal
             >
               <div className="cert-card">
                 <div className="cert-image-container">
-                  <img src={c.image} alt={c.title} className="cert-image" loading="lazy" />
+                  <img
+                    src={c.image}
+                    alt={c.title}
+                    className="cert-image"
+                    loading="lazy"
+                    onError={(e) => {
+                      // avoid infinite loop if fallback also fails
+                      if (e.currentTarget.dataset.errored) return;
+                      e.currentTarget.dataset.errored = '1';
+                      // fallback to a bundled image that exists in the project
+                      e.currentTarget.src = '/img/cover.png';
+                      // log to help debugging missing files on deploy
+                      // eslint-disable-next-line no-console
+                      console.warn(`Certificate image failed to load: ${c.image}`);
+                    }}
+                  />
                   <div className="cert-overlay">
                     <div className="cert-overlay-content">
                       <span className="cert-view-badge">View Details</span>

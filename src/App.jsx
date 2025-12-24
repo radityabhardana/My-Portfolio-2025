@@ -543,11 +543,10 @@ export default function App() {
               textAlign: isSmallScreen ? "center" : "left",
             }}
           >
-            I create beutiful, function, and user-centerd digital experiences.{" "}
+           I create beautiful, functional, and user-centered digital experiences.{" "}
             <br />
-            With 1 and half years of experiences in web Development, I bring
-            ideas <br />
-            to life through clean code and thoughtful design
+            With 1.5 years of experience in web development, I bring ideas<br />
+            to life through clean code and thoughtful design.
           </p>
           <div
             style={{
