@@ -34,7 +34,13 @@
   perspective: 500px;
   transform: translate3d(0, 0, 0.1px);
   position: relative;
-  touch-action: none;
+  /* allow vertical panning on touch devices so the page can scroll when touching the card */
+  touch-action: pan-y;
+}
+
+/* Keep the original 'touch-action: none' for devices with a precise pointer (mouse) */
+@media (hover: hover) and (pointer: fine) {
+  .pc-card-wrapper { touch-action: none; }
 }
 
 .pc-behind {
