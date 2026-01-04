@@ -23,6 +23,36 @@ export default function LiquidEther({
   autoResumeDelay = 1000,
   autoRampDuration = 0.6
 }) {
+  // Detect mobile device for optimization
+  const isMobileDevice = () => {
+    if (typeof window === 'undefined') return false;
+    const ua = navigator.userAgent.toLowerCase();
+    return /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(ua);
+  };
+  
+  const isLowEndDevice = () => {
+    if (typeof window === 'undefined') return false;
+    const cores = navigator.hardwareConcurrency || 4;
+    const ram = navigator.deviceMemory || 4;
+    return cores <= 2 || ram < 4;
+  };
+
+  // Apply mobile optimizations
+  const isMobile = isMobileDevice();
+  const isLowEnd = isLowEndDevice();
+  
+  // Mobile-optimized defaults
+  const mobileResolution = isLowEnd ? 0.25 : 0.35;
+  const optimizedResolution = isMobile ? Math.min(resolution, mobileResolution) : resolution;
+  const optimizedIterationsViscous = isMobile ? Math.max(4, Math.floor(iterationsViscous / 4)) : iterationsViscous;
+  const optimizedIterationsPoisson = isMobile ? Math.max(4, Math.floor(iterationsPoisson / 4)) : iterationsPoisson;
+  const optimizedMouseForce = isMobile ? mouseForce * 0.6 : mouseForce;
+  const optimizedCursorSize = isMobile ? Math.max(40, cursorSize * 0.7) : cursorSize;
+  const optimizedIsViscous = isMobile && isLowEnd ? false : isViscous;
+  const optimizedBFECC = isMobile ? false : BFECC;
+  const optimizedAutoDemo = isMobile ? false : autoDemo;
+  const optimizedAutoSpeed = isMobile ? autoSpeed * 0.5 : autoSpeed;
+  const optimizedDt = isMobile ? 0.016 : dt;
   const mountRef = useRef(null);
   const webglRef = useRef(null);
   const resizeObserverRef = useRef(null);
@@ -30,6 +60,11 @@ export default function LiquidEther({
   const intersectionObserverRef = useRef(null);
   const isVisibleRef = useRef(true);
   const resizeRafRef = useRef(null);
+
+  // Disable LiquidEther on mobile devices - too heavy for mobile performance
+  if (isMobileDevice()) {
+    return <div ref={mountRef} className={`liquid-ether-container ${className || ''}`} style={style} />;
+  }
 
   useEffect(() => {
     if (!mountRef.current) return;
@@ -85,9 +120,16 @@ export default function LiquidEther({
       }
       init(container) {
         this.container = container;
-        this.pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+        const pixelRatio = window.devicePixelRatio || 1;
+        // Aggressive pixel ratio limiting on mobile
+        this.pixelRatio = isMobile ? Math.min(pixelRatio, 1) : Math.min(pixelRatio, 2);
         this.resize();
-        this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        this.renderer = new THREE.WebGLRenderer({ 
+          antialias: isMobile ? false : true, 
+          alpha: true,
+          precision: isMobile ? 'lowp' : 'highp',
+          powerPreference: 'low-power'
+        });
         this.renderer.autoClear = false;
         this.renderer.setClearColor(new THREE.Color(0x000000), 0);
         this.renderer.setPixelRatio(this.pixelRatio);
@@ -367,7 +409,7 @@ export default function LiquidEther({
 }
 `;
     const advection_frag = `
-    precision highp float;
+    precision ${isMobile ? 'mediump' : 'highp'} float;
     uniform sampler2D velocity;
     uniform float dt;
     uniform bool isBFECC;
@@ -397,7 +439,7 @@ export default function LiquidEther({
 }
 `;
     const color_frag = `
-    precision highp float;
+    precision ${isMobile ? 'mediump' : 'highp'} float;
     uniform sampler2D velocity;
     uniform sampler2D palette;
     uniform vec4 bgColor;
@@ -412,7 +454,7 @@ export default function LiquidEther({
 }
 `;
     const divergence_frag = `
-    precision highp float;
+    precision ${isMobile ? 'mediump' : 'highp'} float;
     uniform sampler2D velocity;
     uniform float dt;
     uniform vec2 px;
@@ -427,7 +469,7 @@ export default function LiquidEther({
 }
 `;
     const externalForce_frag = `
-    precision highp float;
+    precision ${isMobile ? 'mediump' : 'highp'} float;
     uniform vec2 force;
     uniform vec2 center;
     uniform vec2 scale;
@@ -441,7 +483,7 @@ export default function LiquidEther({
 }
 `;
     const poisson_frag = `
-    precision highp float;
+    precision ${isMobile ? 'mediump' : 'highp'} float;
     uniform sampler2D pressure;
     uniform sampler2D divergence;
     uniform vec2 px;
@@ -457,7 +499,7 @@ export default function LiquidEther({
 }
 `;
     const pressure_frag = `
-    precision highp float;
+    precision ${isMobile ? 'mediump' : 'highp'} float;
     uniform sampler2D pressure;
     uniform sampler2D velocity;
     uniform vec2 px;
@@ -476,7 +518,7 @@ export default function LiquidEther({
 }
 `;
     const viscous_frag = `
-    precision highp float;
+    precision ${isMobile ? 'mediump' : 'highp'} float;
     uniform sampler2D velocity;
     uniform sampler2D velocity_new;
     uniform float v;
@@ -774,6 +816,8 @@ export default function LiquidEther({
       }
       getFloatType() {
         const isIOS = /(iPad|iPhone|iPod)/i.test(navigator.userAgent);
+        // Use lower precision on mobile for better performance
+        if (isMobile) return THREE.HalfFloatType;
         return isIOS ? THREE.HalfFloatType : THREE.FloatType;
       }
       createAllFBO() {
@@ -1024,18 +1068,18 @@ export default function LiquidEther({
       if (!sim) return;
       const prevRes = sim.options.resolution;
       Object.assign(sim.options, {
-        mouse_force: mouseForce,
-        cursor_size: cursorSize,
-        isViscous,
+        mouse_force: optimizedMouseForce,
+        cursor_size: optimizedCursorSize,
+        isViscous: optimizedIsViscous,
         viscous,
-        iterations_viscous: iterationsViscous,
-        iterations_poisson: iterationsPoisson,
-        dt,
-        BFECC,
-        resolution,
+        iterations_viscous: optimizedIterationsViscous,
+        iterations_poisson: optimizedIterationsPoisson,
+        dt: optimizedDt,
+        BFECC: optimizedBFECC,
+        resolution: optimizedResolution,
         isBounce
       });
-      if (resolution !== prevRes) {
+      if (optimizedResolution !== prevRes) {
         sim.resize();
       }
     };
@@ -1056,7 +1100,8 @@ export default function LiquidEther({
           webglRef.current.pause();
         }
       },
-      { threshold: [0, 0.01, 0.1] }
+      // More aggressive intersection thresholds on mobile
+      { threshold: isMobile ? [0, 0.05] : [0, 0.01, 0.1] }
     );
     io.observe(container);
     intersectionObserverRef.current = io;
@@ -1120,20 +1165,20 @@ export default function LiquidEther({
     if (!sim) return;
     const prevRes = sim.options.resolution;
     Object.assign(sim.options, {
-      mouse_force: mouseForce,
-      cursor_size: cursorSize,
-      isViscous,
+      mouse_force: optimizedMouseForce,
+      cursor_size: optimizedCursorSize,
+      isViscous: optimizedIsViscous,
       viscous,
-      iterations_viscous: iterationsViscous,
-      iterations_poisson: iterationsPoisson,
-      dt,
-      BFECC,
-      resolution,
+      iterations_viscous: optimizedIterationsViscous,
+      iterations_poisson: optimizedIterationsPoisson,
+      dt: optimizedDt,
+      BFECC: optimizedBFECC,
+      resolution: optimizedResolution,
       isBounce
     });
     if (webgl.autoDriver) {
-      webgl.autoDriver.enabled = autoDemo;
-      webgl.autoDriver.speed = autoSpeed;
+      webgl.autoDriver.enabled = optimizedAutoDemo;
+      webgl.autoDriver.speed = optimizedAutoSpeed;
       webgl.autoDriver.resumeDelay = autoResumeDelay;
       webgl.autoDriver.rampDurationMs = autoRampDuration * 1000;
       if (webgl.autoDriver.mouse) {
@@ -1141,22 +1186,22 @@ export default function LiquidEther({
         webgl.autoDriver.mouse.takeoverDuration = takeoverDuration;
       }
     }
-    if (resolution !== prevRes) {
+    if (optimizedResolution !== prevRes) {
       sim.resize();
     }
   }, [
-    mouseForce,
-    cursorSize,
-    isViscous,
+    optimizedMouseForce,
+    optimizedCursorSize,
+    optimizedIsViscous,
     viscous,
-    iterationsViscous,
-    iterationsPoisson,
-    dt,
-    BFECC,
-    resolution,
+    optimizedIterationsViscous,
+    optimizedIterationsPoisson,
+    optimizedDt,
+    optimizedBFECC,
+    optimizedResolution,
     isBounce,
-    autoDemo,
-    autoSpeed,
+    optimizedAutoDemo,
+    optimizedAutoSpeed,
     autoIntensity,
     takeoverDuration,
     autoResumeDelay,
