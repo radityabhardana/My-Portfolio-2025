@@ -58,6 +58,13 @@
   transition: opacity 200ms ease;
 }
 
+/* Disable behind glow on mobile for performance */
+@media (max-width: 768px) {
+  .pc-behind {
+    display: none;
+  }
+}
+
 .pc-card-wrapper:hover,
 .pc-card-wrapper.active {
   --card-opacity: 1;
@@ -123,6 +130,14 @@
   animation: holo-bg 18s linear infinite;
   animation-play-state: running;
   mix-blend-mode: color-dodge;
+}
+
+/* Simplify shine effect on mobile */
+@media (max-width: 768px) {
+  .pc-shine {
+    animation: none;
+    filter: brightness(0.5) opacity(0.3);
+  }
 }
 
 .pc-shine,
@@ -271,6 +286,15 @@
   transition: transform 120ms ease-out;
 }
 
+/* Simplify avatar animation on mobile */
+@media (max-width: 768px) {
+  .pc-avatar-content .avatar {
+    transform: translateX(-50%) translateZ(0);
+    will-change: auto;
+    transition: none;
+  }
+}
+
 .pc-avatar-content::before {
   content: '';
   position: absolute;
@@ -297,6 +321,13 @@
   border-radius: calc(max(0px, var(--card-radius) - var(--ui-inset) + var(--ui-radius-bias)));
   padding: 12px 14px;
   pointer-events: auto;
+}
+
+/* Reduce backdrop-filter on mobile for performance */
+@media (max-width: 768px) {
+  .pc-user-info {
+    backdrop-filter: blur(8px);
+  }
 }
 
 .pc-user-details {
@@ -371,6 +402,13 @@
   );
   z-index: 5;
   mix-blend-mode: luminosity;
+}
+
+/* Simplify transform on mobile */
+@media (max-width: 768px) {
+  .pc-content:not(.pc-avatar-content) {
+    transform: translate3d(0, 0, 0.1px);
+  }
 }
 
 .pc-details {

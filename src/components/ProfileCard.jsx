@@ -44,17 +44,20 @@ const ProfileCardComponent = ({
   const enterTimerRef = useRef(null);
   const leaveRafRef = useRef(null);
   const isTouchDevice = useRef(false);
+  const isMobileDevice = useRef(false);
 
-  // Detect if device supports touch
+  // Detect if device supports touch and mobile screen
   useEffect(() => {
     isTouchDevice.current = ('ontouchstart' in window) ||
                             (navigator.maxTouchPoints > 0) ||
                             (navigator.msMaxTouchPoints > 0);
+    // Detect mobile screen size
+    isMobileDevice.current = window.innerWidth < 768;
   }, []);
 
   const tiltEngine = useMemo(() => {
-    // Disable tilt on touch devices
-    if (!enableTilt || isTouchDevice.current) return null;
+    // Disable tilt on touch devices and mobile - too heavy for mobile performance
+    if (!enableTilt || isTouchDevice.current || isMobileDevice.current) return null;
 
     let rafId = null;
     let running = false;
@@ -309,12 +312,13 @@ const ProfileCardComponent = ({
     () => ({
       '--icon': iconUrl ? `url(${iconUrl})` : 'none',
       '--icon-size': iconSize,
-      '--grain': grainUrl ? `url(${grainUrl})` : 'none',
+      '--grain': isMobileDevice.current ? 'none' : (grainUrl ? `url(${grainUrl})` : 'none'),
       '--inner-gradient': innerGradient ?? DEFAULT_INNER_GRADIENT,
       '--behind-glow-color': behindGlowColor ?? 'rgba(125, 190, 255, 0.67)',
-      '--behind-glow-size': behindGlowSize ?? '50%'
+      '--behind-glow-size': behindGlowSize ?? '50%',
+      '--is-mobile': isMobileDevice.current ? '1' : '0'
     }),
-    [iconUrl, grainUrl, innerGradient, behindGlowColor, behindGlowSize]
+    [iconUrl, grainUrl, innerGradient, behindGlowColor, behindGlowSize, isMobileDevice.current]
   );
 
   const handleContactClick = useCallback(() => {
