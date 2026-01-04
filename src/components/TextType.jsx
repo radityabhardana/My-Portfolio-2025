@@ -32,6 +32,7 @@ const TextType = ({
   const [isVisible, setIsVisible] = useState(!startOnVisible);
   const cursorRef = useRef(null);
   const containerRef = useRef(null);
+  const isMobileDevice = useRef(window.innerWidth < 768);
 
   const textArray = useMemo(() => (Array.isArray(text) ? text : [text]), [text]);
 
@@ -40,6 +41,12 @@ const TextType = ({
     const { min, max } = variableSpeed;
     return Math.random() * (max - min) + min;
   }, [variableSpeed, typingSpeed]);
+
+  const getOptimizedTypingSpeed = () => {
+    // Slower typing speed on mobile to reduce CPU usage
+    if (isMobileDevice.current) return typingSpeed * 1.5;
+    return typingSpeed;
+  };
 
   const getCurrentTextColor = () => {
     if (textColors.length === 0) return;
@@ -111,7 +118,7 @@ const TextType = ({
               setDisplayedText(prev => prev + processedText[currentCharIndex]);
               setCurrentCharIndex(prev => prev + 1);
             },
-            variableSpeed ? getRandomSpeed() : typingSpeed
+            variableSpeed ? getRandomSpeed() : getOptimizedTypingSpeed()
           );
         } else if (textArray.length >= 1) {
           if (!loop && currentTextIndex === textArray.length - 1) return;

@@ -13,6 +13,13 @@
   backface-visibility: hidden;
 }
 
+/* Simplify SVG rendering on mobile */
+@media (max-width: 768px) {
+  .svg {
+    filter: none !important;
+  }
+}
+
 .card-text {
   position: absolute;
   bottom: 1.2em;

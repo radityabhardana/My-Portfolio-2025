@@ -9,8 +9,13 @@ const DecayCard = ({ width = 300, height = 400, image = '/img/radit.jpg',  child
   const cursor = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
   const cachedCursor = useRef({ ...cursor.current });
   const winsize = useRef({ width: window.innerWidth, height: window.innerHeight });
+  const isMobileDevice = useRef(window.innerWidth < 768);
+  const rafRef = useRef(null);
 
   useEffect(() => {
+    // Disable DecayCard RAF loop on mobile for better performance
+    if (isMobileDevice.current) return;
+
     const lerp = (a, b, n) => (1 - n) * a + n * b;
 
     const map = (x, a, b, c, d) => ((x - a) * (d - c)) / (b - a) + c;
@@ -79,7 +84,7 @@ const DecayCard = ({ width = 300, height = 400, image = '/img/radit.jpg',  child
 
       cachedCursor.current = { ...cursor.current };
 
-      requestAnimationFrame(render);
+      rafRef.current = requestAnimationFrame(render);
     };
 
     render();
@@ -87,6 +92,7 @@ const DecayCard = ({ width = 300, height = 400, image = '/img/radit.jpg',  child
     return () => {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, []);
 

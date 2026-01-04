@@ -38,6 +38,7 @@ const ScrollReveal = ({
     const el = containerRef.current;
     if (!el) return;
 
+    const isMobileDevice = window.innerWidth < 768;
     const scroller = scrollContainerRef && scrollContainerRef.current ? scrollContainerRef.current : window;
 
     gsap.fromTo(
@@ -67,7 +68,7 @@ const ScrollReveal = ({
         ease: 'none',
         color: '#ffffff',
         opacity: 1,
-        stagger: 0.05,
+        stagger: isMobileDevice ? 0 : 0.05,
         scrollTrigger: {
           trigger: el,
           scroller,

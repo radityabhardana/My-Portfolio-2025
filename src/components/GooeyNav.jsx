@@ -19,6 +19,7 @@ const GooeyNav = ({
   const filterRef = useRef(null);
   const textRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(initialActiveIndex);
+  const isMobileDevice = useRef(window.innerWidth < 768);
 
   // if a controlled activeIndex prop is provided, keep internal state in sync
   useEffect(() => {
@@ -47,6 +48,9 @@ const GooeyNav = ({
   };
 
   const makeParticles = element => {
+    // Disable particle animation on mobile for performance
+    if (isMobileDevice.current) return;
+
     const d = particleDistances;
     const r = particleR;
     const bubbleTime = animationTime * 2 + timeVariance;

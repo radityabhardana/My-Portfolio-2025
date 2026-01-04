@@ -160,6 +160,14 @@
   transform-origin: center;
 }
 
+/* Disable animations on mobile */
+@media (max-width: 768px) {
+  .particle,
+  .point {
+    display: none !important;
+  }
+}
+
 .particle {
   --time: 5s;
   position: absolute;
