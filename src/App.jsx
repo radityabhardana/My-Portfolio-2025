@@ -28,6 +28,7 @@ import useSmoothScroll from "./hooks/useSmoothScroll";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import CurvedLoop from "./components/CurvedLoop.jsx";
+import { Analytics } from "@vercel/analytics/react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -1038,6 +1039,7 @@ export default function App() {
 
       {/* Contact Section */}
       <Contact />
+      <Analytics />
     </div>
   );
 }
