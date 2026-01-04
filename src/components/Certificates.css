@@ -15,6 +15,20 @@
   animation: fadeInUp 0.6s ease-out;
 }
 
+@media (max-width: 768px) {
+  .cert-container {
+    padding: 0 20px;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .cert-container {
+    padding: 0 16px;
+    max-width: 100%;
+  }
+}
+
 /* Header */
 .cert-header {
   margin-bottom: 52.8px;
@@ -133,6 +147,20 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 22px;
   margin-bottom: 52.8px;
+}
+
+@media (max-width: 768px) {
+  .cert-grid-container {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cert-grid-container {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
 }
 
 .cert-card-wrapper {

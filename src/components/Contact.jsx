@@ -113,7 +113,7 @@ export default function Contact() {
       }} 
       id='contact'
     >
-      <div style={{ maxWidth: 1000, margin: '0 auto', width: '100%' }}>
+      <div style={{ maxWidth: 1000, margin: '0 auto', width: '100%', paddingLeft: window && window.innerWidth < 768 ? '0' : 'inherit', paddingRight: window && window.innerWidth < 768 ? '0' : 'inherit' }}>
         {/* Header */}
         <div className="section-header" style={{ display: 'flex', alignItems: 'center', gap: '22px', marginBottom: '55px' }}>
           <div className="section-icon" style={{

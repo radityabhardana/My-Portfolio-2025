@@ -1001,7 +1001,7 @@ export default function App() {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          padding: "88px 35.2px",
+          padding: isSmallScreen ? "60px 20px 80px" : "88px 35.2px",
         }}
         id="certificates"
       >
@@ -1018,11 +1018,11 @@ export default function App() {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          padding: isSmallScreen ? "60px 20px 100px" : "88px 35.2px",
+          padding: isSmallScreen ? "60px 0px 100px" : "88px 35.2px",
         }}
         id="projects"
       >
-        <div style={{ maxWidth: 1200, margin: "0 auto", width: "100%" }}>
+        <div style={{ width: "100%", maxWidth: 1200 }}>
           <Projects isSmallScreen={isSmallScreen} />
         </div>
       </section>

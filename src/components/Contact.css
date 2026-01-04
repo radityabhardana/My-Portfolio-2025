@@ -226,6 +226,18 @@
   }
 }
 
+@media (max-width: 768px) {
+  .contact-item {
+    padding: 14px;
+    gap: 12px;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    padding: 11px 13px;
+  }
+}
+
 @media (max-width: 600px) {
   .contact-item {
     padding: 12px;
