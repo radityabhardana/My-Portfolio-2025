@@ -79,7 +79,7 @@ const DecayCard = ({ width = 300, height = 400, image = '/img/radit.jpg',  child
       );
 
       if (displacementMapRef.current) {
-        gsap.set(displacementMapRef.current, { attr: { scale: imgValues.displacementScale } });
+        gsap.set(displacementMapRef.current, { attr: { scale: Math.min(imgValues.displacementScale, 15) } });
       }
 
       cachedCursor.current = { ...cursor.current };

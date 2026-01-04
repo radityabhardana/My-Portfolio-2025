@@ -27,7 +27,6 @@ import { useEffect, useRef, useState } from "react";
 import useSmoothScroll from "./hooks/useSmoothScroll";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import CurvedLoop from "./components/CurvedLoop.jsx";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -914,20 +913,12 @@ export default function App() {
             <div
               style={{
                 width: "100%",
-                height: "80px",
+                height: "0px",
                 display: "flex",
                 alignItems: "center",
-                marginTop: "100px",
+                marginTop: "0px",
               }}
             >
-              <CurvedLoop
-                marqueeText="Raditya ✦ Bagus ✦ Hardana ✦"
-                speed={3}
-                curveAmount={100}
-                direction="right"
-                interactive={true}
-                className="custom-text-style"
-              />
             </div>
           )}
         </div>
