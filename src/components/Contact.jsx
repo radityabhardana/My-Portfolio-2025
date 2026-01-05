@@ -157,7 +157,13 @@ export default function Contact() {
         </p>
 
         {/* Contact Container */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '48px', alignItems: 'start' }}>
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: (typeof window !== 'undefined' && window.innerWidth < 900) ? '1fr' : '1fr 1fr', 
+          gap: (typeof window !== 'undefined' && window.innerWidth < 900) ? '32px' : '48px', 
+          alignItems: 'start',
+          width: '100%'
+        }}>
           {/* Contact Info */}
           <div className="contact-info">
             <h3 style={{

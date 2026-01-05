@@ -4,7 +4,6 @@ import TextType from "./components/TextType.jsx";
 import GooeyNav from "./components/GooeyNav.jsx";
 import BlurText from "./components/BlurText.jsx";
 import ProfileCard from "./components/ProfileCard.jsx";
-import DecayCard from "./components/DecayCard.jsx";
 import {
   SiReact,
   SiNextdotjs,
@@ -904,7 +903,6 @@ export default function App() {
                   height: "auto",
                 }}
               >
-                <DecayCard />
               </div>
             )}
           </div>
