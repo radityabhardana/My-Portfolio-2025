@@ -110,10 +110,11 @@ export default function Contact() {
         justifyContent: 'center',
         alignItems: 'center',
         padding: window && window.innerWidth < 900 ? '40px 20px 80px' : '0 35.2px',
+        overflow: 'hidden',
       }} 
       id='contact'
     >
-      <div style={{ maxWidth: 1000, margin: '0 auto', width: '100%', paddingLeft: window && window.innerWidth < 768 ? '0' : 'inherit', paddingRight: window && window.innerWidth < 768 ? '0' : 'inherit' }}>
+      <div style={{ maxWidth: 1000, margin: '0 auto', width: '100%', boxSizing: 'border-box', padding: window && window.innerWidth < 900 ? '0 0' : '0' }}>
         {/* Header */}
         <div className="section-header" style={{ display: 'flex', alignItems: 'center', gap: '22px', marginBottom: '55px' }}>
           <div className="section-icon" style={{

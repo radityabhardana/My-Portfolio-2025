@@ -1002,6 +1002,8 @@ export default function App() {
           justifyContent: "center",
           alignItems: "center",
           padding: isSmallScreen ? "60px 20px 80px" : "88px 35.2px",
+          overflow: "hidden",
+          boxSizing: "border-box"
         }}
         id="certificates"
       >
@@ -1019,10 +1021,12 @@ export default function App() {
           justifyContent: "center",
           alignItems: "center",
           padding: isSmallScreen ? "60px 0px 100px" : "88px 35.2px",
+          overflow: "hidden",
+          boxSizing: "border-box"
         }}
         id="projects"
       >
-        <div style={{ width: "100%", maxWidth: 1200 }}>
+        <div style={{ width: "100%", maxWidth: 1200, boxSizing: "border-box" }}>
           <Projects isSmallScreen={isSmallScreen} />
         </div>
       </section>

@@ -9,6 +9,7 @@
 html, body {
   width: 100%;
   height: 100%;
+  overflow-x: hidden;
 }
 
 /* Hide scrollbars globally while keeping scroll functionality for all scrollable elements
@@ -37,6 +38,7 @@ html { scroll-behavior: smooth; }
 
 #root {
   width: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -46,6 +48,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 .glass-card {
