@@ -109,12 +109,13 @@ export default function Contact() {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: window && window.innerWidth < 900 ? '40px 20px 80px' : '0 35.2px',
+        padding: window && window.innerWidth < 900 ? '40px 16px 80px' : '0 35.2px',
         overflow: 'hidden',
+        boxSizing: 'border-box'
       }} 
       id='contact'
     >
-      <div style={{ maxWidth: 1000, margin: '0 auto', width: '100%', boxSizing: 'border-box', padding: window && window.innerWidth < 900 ? '0 0' : '0' }}>
+      <div style={{ maxWidth: 1000, margin: '0 auto', width: '100%', boxSizing: 'border-box', padding: '0', overflow: 'hidden' }}>
         {/* Header */}
         <div className="section-header" style={{ display: 'flex', alignItems: 'center', gap: '22px', marginBottom: '55px' }}>
           <div className="section-icon" style={{
