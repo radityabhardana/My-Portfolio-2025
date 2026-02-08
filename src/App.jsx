@@ -4,6 +4,7 @@ import TextType from "./components/TextType.jsx";
 import GooeyNav from "./components/GooeyNav.jsx";
 import BlurText from "./components/BlurText.jsx";
 import ProfileCard from "./components/ProfileCard.jsx";
+import MetaTags from "./components/MetaTags.jsx";
 import {
   SiReact,
   SiNextdotjs,
@@ -270,7 +271,13 @@ export default function App() {
   }, [isSmallScreen]);
 
   return (
-    <div style={{ width: "100%" }}>
+    <>
+      <MetaTags 
+        title="Raditya Bagus Hardana - Full Stack Web3 Developer & Crypto Trader"
+        description="Full Stack Web3 Developer & Crypto Trader with Binance x AWS Node Runners Certificate. Specializing in React, Next.js, TypeScript, Blockchain, DeFi, and Crypto Trading. Explore my portfolio, Web3 projects, and skills."
+        url="https://radityabagushardana.vercel.app/"
+      />
+      <div style={{ width: "100%" }}>
       {/* Banner Section - Fixed */}
 
       <div
@@ -489,10 +496,10 @@ export default function App() {
           />
           <TextType
             text={[
-              "Web Enthusiast",
-              "Frontend Developer",
-              "Software Engineer",
-              "UI/UX Designer",
+              "Web3 Enthusiast",
+              "Blockchain Developer",
+              "Full Stack Developer",
+              "Crypto Trader",
             ]}
             typingSpeed={90}
             pauseDuration={1500}
@@ -514,7 +521,7 @@ export default function App() {
             >
               <ProfileCard
                 name="Raditya Bagus Hardana"
-                title="Software Engineer"
+                title="Web3 Developer & Crypto Trader"
                 handle="javicodes"
                 status="Online"
                 contactText="Contact Me"
@@ -669,7 +676,7 @@ export default function App() {
           >
             <ProfileCard
               name="Raditya Bagus Hardana"
-              title="Software Engineer"
+              title="Web3 Developer & Crypto Trader"
               handle="javicodes"
               status="Online"
               contactText="Contact Me"
@@ -1031,6 +1038,7 @@ export default function App() {
 
       {/* Contact Section */}
       <Contact />
-    </div>
+      </div>
+    </>
   );
 }
