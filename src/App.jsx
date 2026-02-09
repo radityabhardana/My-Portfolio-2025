@@ -496,10 +496,10 @@ export default function App() {
           />
           <TextType
             text={[
-              "Web3 Enthusiast",
-              "Blockchain Developer",
-              "Full Stack Developer",
-              "Crypto Trader",
+              "Web Enthusiast",
+              "Frontend Developer",
+              "Software Engineer",
+              "UI/UX Designer",
             ]}
             typingSpeed={90}
             pauseDuration={1500}
@@ -521,7 +521,6 @@ export default function App() {
             >
               <ProfileCard
                 name="Raditya Bagus Hardana"
-                title="Web3 Developer & Crypto Trader"
                 handle="javicodes"
                 status="Online"
                 contactText="Contact Me"
@@ -676,7 +675,6 @@ export default function App() {
           >
             <ProfileCard
               name="Raditya Bagus Hardana"
-              title="Web3 Developer & Crypto Trader"
               handle="javicodes"
               status="Online"
               contactText="Contact Me"
