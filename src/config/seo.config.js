@@ -16,8 +16,8 @@ const SEO_CONFIG = {
   author: {
     name: "Raditya Bagus Hardana",
     email: "your-email@example.com",
-    title: "Full Stack Web3 Developer & Crypto Trader",
-    bio: "Full Stack Web3 Developer specializing in React, Next.js, TypeScript, Blockchain, and DeFi. Crypto Trader with Binance x AWS Node Runners Certificate and expertise in modern web technologies and Web3 integration.",
+    title: "Web Developer & Web 3 Developer",
+    bio: "Web Developer & Web 3 Developer specializing in React, Next.js, TypeScript, JavaScript, and Blockchain technologies.",
     image: "https://radityabagushardana.vercel.app/img/title.png",
     social: {
       github: "https://github.com/radityabagus",
@@ -29,63 +29,60 @@ const SEO_CONFIG = {
   // Main SEO keywords
   keywords: {
     primary: [
-      "Web3 Developer",
-      "Full Stack Developer",
+      "Web Developer",
+      "Web 3 Developer",
       "Blockchain Developer",
-      "Smart Contract Developer",
       "React Developer",
       "Next.js Developer",
-      "Crypto Trader",
-      "DeFi Developer",
+      "JavaScript Developer",
+      "TypeScript Developer",
     ],
     secondary: [
-      "Web3 Portfolio",
-      "Binance x AWS Node Runners",
-      "Cryptocurrency",
+      "Smart Contracts",
       "Blockchain Technology",
       "Ethereum",
-      "Smart Contracts",
-      "DeFi Projects",
-      "Crypto Trading",
-      "TypeScript Developer",
-      "JavaScript Developer",
+      "Web Development",
       "Frontend Developer",
       "Backend Developer",
-      "GSAP Animation",
-      "Three.js",
-      "UI/UX Design",
-      "Modern Web Technologies",
+      "Full Stack Developer",
+      "JavaScript",
+      "TypeScript",
+      "React",
+      "Next.js",
+      "HTML",
+      "CSS",
+      "Web3 Integration",
     ],
   },
 
   // Page metadata (for different pages/sections)
   pages: {
     home: {
-      title: "Raditya Bagus Hardana - Full Stack Web3 Developer & Crypto Trader",
+      title: "Raditya Bagus Hardana - Web Developer & Web 3 Developer",
       description:
-        "Full Stack Web3 Developer & Crypto Trader with Binance x AWS Node Runners Certificate. Specializing in React, Next.js, TypeScript, Blockchain, and DeFi. Explore my portfolio, Web3 projects, and skills.",
+        "Web Developer & Web 3 Developer specializing in React, Next.js, TypeScript, JavaScript, and Blockchain technologies. Explore my portfolio, projects, and skills.",
       keywords:
-        "Web3 Developer, Full Stack Developer, Blockchain, Smart Contracts, React, Next.js, Crypto Trader",
+        "Web Developer, Web 3 Developer, Blockchain, Smart Contracts, React, Next.js, TypeScript, JavaScript",
     },
     about: {
-      title: "About - Raditya Bagus Hardana | Web3 Developer & Crypto Trader",
+      title: "About - Raditya Bagus Hardana | Web Developer & Web 3 Developer",
       description:
-        "Learn more about Raditya Bagus Hardana, a passionate Full Stack Web3 Developer with expertise in blockchain, DeFi, and crypto trading. Holds Binance x AWS Node Runners Certificate with proven experience in modern web technologies.",
+        "Learn more about Raditya Bagus Hardana, a passionate Web Developer & Web 3 Developer with expertise in blockchain technologies and modern web development.",
     },
     projects: {
-      title: "Web3 & Blockchain Projects - Raditya Bagus Hardana",
+      title: "Web Development & Blockchain Projects - Raditya Bagus Hardana",
       description:
-        "Explore my portfolio of Web3 and blockchain projects built with React, Next.js, TypeScript, and Web3 technologies. Including DeFi integrations and smart contract interactions.",
+        "Explore my portfolio of web development and blockchain projects built with React, Next.js, TypeScript, and Web3 technologies.",
     },
     skills: {
       title: "Skills - Raditya Bagus Hardana",
       description:
-        "Technical skills and expertise in React, Next.js, TypeScript, JavaScript, HTML, CSS, and more.",
+        "Technical skills and expertise in React, Next.js, TypeScript, JavaScript, HTML, CSS, and Blockchain development.",
     },
     certificates: {
       title: "Certificates - Raditya Bagus Hardana",
       description:
-        "Professional certifications and credentials in web development and related fields.",
+        "Professional certifications and credentials in web development and blockchain technologies.",
     },
     contact: {
       title: "Contact - Raditya Bagus Hardana",
@@ -103,8 +100,8 @@ const SEO_CONFIG = {
       url: "https://radityabagushardana.vercel.app",
       image: "https://radityabagushardana.vercel.app/img/title.png",
       description:
-        "Full Stack Developer specializing in React, Next.js, TypeScript, and Modern Web Technologies",
-      jobTitle: "Full Stack Developer",
+        "Web Developer & Web 3 Developer specializing in React, Next.js, TypeScript, JavaScript, and Blockchain technologies",
+      jobTitle: "Web Developer & Web 3 Developer",
     },
   },
 

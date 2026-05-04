@@ -1,5 +1,49 @@
 /* Skills Carousel Styles */
 /* Simplified, clean skills layout */
+.skills-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+.skills-tabs {
+  display: flex;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(10px);
+}
+
+.skills-tab {
+  padding: 10px 24px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 200ms ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+.skills-tab:hover {
+  color: rgba(255, 255, 255, 0.8);
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.skills-tab.active {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 1);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+}
+
 .skills-grid-wrap {
   padding: 36px 0;
   display: flex;
@@ -82,6 +126,8 @@
 /* Responsive Design */
 @media (max-width: 900px) {
   .skills-grid { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); }
+  .skills-tabs { gap: 8px; }
+  .skills-tab { padding: 8px 16px; font-size: 0.9rem; }
 }
 
 @media (max-width: 480px) {
@@ -89,6 +135,8 @@
   .skill-chip-icon { width: 38px; height: 38px; }
   .skill-chip-svg { font-size: 1.05rem }
   .skill-chip-name { font-size: 0.85rem }
+  .skills-tabs { gap: 6px; padding: 6px; }
+  .skills-tab { padding: 6px 12px; font-size: 0.8rem; }
 }
 
 /* Make pointer hover subtle effect on desktop */
