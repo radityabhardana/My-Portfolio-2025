@@ -1,11 +1,11 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import './Certificates.css';
 import { FiExternalLink } from 'react-icons/fi';
 import { BiAward } from 'react-icons/bi';
 
 const sampleCertificates = [
   { id: 1, title: 'Clevio — Workshop GameDev', issuer: 'Clevio', date: '2025', image: '/certificate/clevio.jpg', url: '#', category: 'Projects' },
-  { id: 2, title: 'IDN — WebDev Competition ', issuer: 'IDN Academy', date: '2025', image: '/certificate/idn.jpg', url: '#', category: 'Projects' },
+  { id: 2, title: 'IDN — WebDev Competition', issuer: 'IDN Academy', date: '2025', image: '/certificate/idn.jpg', url: '#', category: 'Projects' },
   { id: 3, title: 'Microvac — Seminar', issuer: 'Microvac', date: '2024', image: '/certificate/microvac.jpg', url: '#', category: 'Others' },
   { id: 4, title: 'Oscar — WebDev Competition', issuer: 'Oscar Program', date: '2025', image: '/certificate/oscar.jpg', url: '#', category: 'Projects' },
   { id: 5, title: 'Binance — AWS Blockchain Node Runner', issuer: 'Binance Program', date: '2025', image: '/certificate/binance1.png', url: '#', category: 'Certifications', pinned: true },
@@ -17,6 +17,8 @@ export default function Certificates({ certificates = sampleCertificates, isSmal
   const [selected, setSelected] = useState(null);
   const [filter, setFilter] = useState('all');
   const [visibleCount, setVisibleCount] = useState(2);
+  const triggerRef = useRef(null);
+  const closeRef = useRef(null);
 
   // track certificate images that failed to load so we can show an explicit UI placeholder
   const [erroredIds, setErroredIds] = useState(() => new Set());
@@ -55,6 +57,22 @@ export default function Certificates({ certificates = sampleCertificates, isSmal
   }, []);
 
   useEffect(() => {
+    if (open) closeRef.current?.focus();
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') closePreview();
+      if (event.key === 'Tab' && closeRef.current) {
+        const items = [...document.querySelectorAll('.cert-modal button, .cert-modal a')];
+        if (!items.length) return;
+        const first = items[0], last = items[items.length - 1];
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      }
+    };
+    if (open) document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [open]);
+
+  useEffect(() => {
     if (open) {
       document.body.style.overflow = 'hidden';
     } else {
@@ -73,6 +91,7 @@ export default function Certificates({ certificates = sampleCertificates, isSmal
   const closePreview = useCallback(() => {
     setOpen(false);
     setTimeout(() => setSelected(null), 300);
+    setTimeout(() => triggerRef.current?.focus(), 300);
   }, []);
 
   const filteredCerts = filter === 'all' ? certificates : certificates.filter(c => c.category === filter);
@@ -128,7 +147,19 @@ export default function Certificates({ certificates = sampleCertificates, isSmal
               key={c.id}
               className="cert-card-wrapper"
               style={{ '--delay': `${idx * 0.1}s` }}
-              onClick={() => openPreview(c)}
+              role="button"
+              tabIndex={0}
+              onClick={(event) => {
+                triggerRef.current = event.currentTarget;
+                openPreview(c);
+              }}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  triggerRef.current = event.currentTarget;
+                  openPreview(c);
+                }
+              }}
             >
               <div className="cert-card">
                 <div className="cert-image-container">
@@ -174,7 +205,7 @@ export default function Certificates({ certificates = sampleCertificates, isSmal
                   <h3 className="cert-card-title">{c.title}</h3>
                   <p className="cert-issuer-name">{c.issuer}</p>
                   
-                  {c.url && c.url !== '#' && (
+                  {c.url && c.url !== '#' ? (
                     <a 
                       href={c.url} 
                       target="_blank" 
@@ -184,6 +215,10 @@ export default function Certificates({ certificates = sampleCertificates, isSmal
                     >
                       Open Certificate <FiExternalLink size={14} />
                     </a>
+                  ) : (
+                    <span className="cert-external-link coming-soon" aria-label="Coming soon">
+                      Coming soon
+                    </span>
                   )}
                 </div>
               </div>
@@ -206,14 +241,14 @@ export default function Certificates({ certificates = sampleCertificates, isSmal
 
       {/* Modal */}
       {open && selected && (
-        <div className={`cert-modal ${open ? 'open' : ''}`} onClick={closePreview} role="dialog" aria-modal="true">
+        <div className={`cert-modal ${open ? 'open' : ''}`} onClick={closePreview} role="dialog" aria-modal="true" aria-labelledby="cert-modal-title">
           {isSmallScreen && (
             <button className="cert-modal-back" onClick={closePreview} aria-label="Back">
               ← Back
             </button>
           )}
           <div className="cert-modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="cert-modal-close" onClick={closePreview} aria-label="Close preview">
+            <button ref={closeRef} className="cert-modal-close" onClick={closePreview} aria-label="Close preview">
               ✕
             </button>
             
@@ -230,20 +265,24 @@ export default function Certificates({ certificates = sampleCertificates, isSmal
               
               <div className="cert-modal-text">
                 <div className="cert-modal-badge">{selected.category}</div>
-                <h2 className="cert-modal-title">{selected.title}</h2>
+                <h2 id="cert-modal-title" className="cert-modal-title">{selected.title}</h2>
                 <p className="cert-modal-issuer">{selected.issuer}</p>
                 <p className="cert-modal-date">Issued: {selected.date}</p>
                 
-                {selected.url && selected.url !== '#' && (
+                {selected.url && selected.url !== '#' ? (
                   <a 
                     href={selected.url} 
                     target="_blank" 
                     rel="noopener noreferrer" 
                     className="cert-modal-btn"
                   >
-                    View Certificate <FiExternalLink size={16} />
-                  </a>
-                )}
+View Certificate <FiExternalLink size={16} />
+                   </a>
+                 ) : (
+                   <span className="cert-modal-btn coming-soon" aria-label="Coming soon">
+                     Coming soon
+                   </span>
+                 )}
               </div>
             </div>
           </div>

@@ -14,16 +14,14 @@ const AUTO_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_AUTO_TEMPLATE_ID || '';
 
 export default function Contact() {
   const formRef = useRef(null);
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [status, setStatus] = useState('idle'); // 'idle' | 'sending' | 'success' | 'error'
   const [error, setError] = useState('');
   const [autoReplyStatus, setAutoReplyStatus] = useState(null);
+  const isSending = status === 'sending';
 
   useEffect(() => {
     if (PUBLIC_KEY) {
       emailjs.init(PUBLIC_KEY);
-    } else {
-      console.warn('EmailJS public key missing. Set VITE_EMAILJS_PUBLIC_KEY in your environment.');
     }
   }, []);
 
@@ -44,14 +42,13 @@ export default function Contact() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError('');
-    setSuccess(false); 
+    setStatus('sending');
+    setError(''); 
 
     try {
       if (!SERVICE_ID || !TEMPLATE_ID) {
-        setError('Email service is not configured. Please set VITE_EMAILJS_SERVICE_ID and VITE_EMAILJS_TEMPLATE_ID.');
-        setLoading(false);
+        setError('Message sending is temporarily unavailable. Please use the email address listed in the contact information.');
+        setStatus('error');
         return;
       }
 
@@ -86,43 +83,28 @@ export default function Contact() {
           }
         }
 
-        setSuccess(true);
+        setStatus('success');
         formEl.reset();
-        setTimeout(() => setSuccess(false), 5000);
+        setTimeout(() => setStatus('idle'), 5000);
+      } else {
+        setError('Failed to send message. Please try again.');
+        setStatus('error');
       }
     } catch (err) {
       setError('Failed to send message. Please try again.');
       console.error('EmailJS error:', err);
-    } finally {
-      setLoading(false);
+      setStatus('error');
     }
   };
 
   return (
-    <section 
-      style={{
-        width: '100%',
-        height: window && window.innerWidth < 900 ? 'auto' : '100vh',
-        // remove heavy gradient on mobile for better legibility
-        background: (typeof window !== 'undefined' && window.innerWidth < 900) ? 'transparent' : 'linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.5))',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: window && window.innerWidth < 900 ? '40px 16px 80px' : '0 35.2px',
-        overflow: 'hidden',
-        boxSizing: 'border-box'
-      }} 
-      id='contact'
-    >
+    <section className="contact-section" id='contact'>
       <div style={{ maxWidth: 1000, margin: '0 auto', width: '100%', boxSizing: 'border-box', padding: '0', overflow: 'hidden' }}>
         {/* Header */}
         <div className="section-header" style={{ display: 'flex', alignItems: 'center', gap: '22px', marginBottom: '55px' }}>
           <div className="section-icon" style={{
             width: '61.6px',
             height: '61.6px',
-            /* use a subtle translucent gradient on mobile for contrast */
-            background: (typeof window !== 'undefined' && window.innerWidth < 900) ? 'linear-gradient(135deg, rgba(82, 39, 255, 0.12), rgba(157, 78, 221, 0.12))' : 'linear-gradient(135deg, rgba(82, 39, 255, 0.2), rgba(157, 78, 221, 0.2))',
             border: '1px solid rgba(82, 39, 255, 0.18)',
             borderRadius: '15.4px',
             display: 'flex',
@@ -134,15 +116,15 @@ export default function Contact() {
           }}>
             <BiEnvelope size={28} />
           </div>
-          <h1 className="section-title" style={{
+          <h2 className="section-title" style={{
             color: 'white',
             fontFamily: "'Poppins', sans-serif",
             fontSize: '2.75rem',
             fontWeight: 700,
             margin: 0
           }}>
-            Get In Touch
-          </h1>
+Get In Touch
+            </h2>
         </div>
 
         {/* Subtitle */}
@@ -158,10 +140,8 @@ export default function Contact() {
         </p>
 
         {/* Contact Container */}
-        <div style={{ 
+        <div className="contact-grid" style={{ 
           display: 'grid', 
-          gridTemplateColumns: (typeof window !== 'undefined' && window.innerWidth < 900) ? '1fr' : '1fr 1fr', 
-          gap: (typeof window !== 'undefined' && window.innerWidth < 900) ? '32px' : '48px', 
           alignItems: 'start',
           width: '100%'
         }}>
@@ -277,16 +257,23 @@ export default function Contact() {
             </div>
 
             {/* Status Messages */}
-            {success && (
-              <div className="alert alert-success">
-                <i className="bi bi-check-circle-fill"></i>
+            {isSending && (
+              <div role="status" aria-live="polite" className="alert alert-info">
+                <span className="spinner" aria-hidden="true"></span>
+                <span>Sending your message...</span>
+              </div>
+            )}
+
+            {status === 'success' && (
+              <div role="status" aria-live="polite" className="alert alert-success">
+                <i className="bi bi-check-circle-fill" aria-hidden="true"></i>
                 <span>Message sent successfully! I'll be in touch soon.</span>
               </div>
             )}
 
-            {error && (
-              <div className="alert alert-error">
-                <i className="bi bi-exclamation-circle-fill"></i>
+            {status === 'error' && error && (
+              <div role="alert" className="alert alert-error">
+                <i className="bi bi-exclamation-circle-fill" aria-hidden="true"></i>
                 <span>{error}</span>
               </div>
             )}
@@ -295,17 +282,17 @@ export default function Contact() {
             <button
               type="submit"
               className="btn-submit"
-              disabled={loading}
+              disabled={isSending}
             >
-              {loading ? (
+              {isSending ? (
                 <>
-                  <span className="spinner"></span>
-                  Sending...
+                  <span className="spinner" aria-hidden="true"></span>
+                  <span>Sending...</span>
                 </>
               ) : (
                 <>
-                  <i className="bi bi-send-fill"></i>
-                  Send Message
+                  <i className="bi bi-send-fill" aria-hidden="true"></i>
+                  <span>Send Message</span>
                 </>
               )}
             </button>

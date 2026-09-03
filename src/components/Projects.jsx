@@ -1,8 +1,11 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import './Projects.css';
 import { FiExternalLink, FiGithub } from 'react-icons/fi';
 import { BiCodeAlt } from 'react-icons/bi';
 
+// TODO(owner): projects with liveUrl/githubUrl '#' are hidden from CTAs as "Coming soon" —
+// provide real URLs when available: Petani Kode Cloning, News Website, Space Engineering Website,
+// UI/UX Space Engineering, Ticket Reservation (live), Fashion E-commerce (github exists).
 const sampleProjects = [
   {
     id: 1,
@@ -10,7 +13,7 @@ const sampleProjects = [
     description: 'Full-stack e-commerce clone built with React, Node.js, and MongoDB — includes product catalog, search & filters, shopping cart, and a demo payment flow.',
     image: '/project/petanikode.png',
     category: 'Frontend',
-    tech: ['Html','Bootstrap'],
+    tech: ['HTML','Bootstrap'],
     liveUrl: '#',
     githubUrl: '#',
     featured: false,
@@ -21,7 +24,7 @@ const sampleProjects = [
     description: 'Responsive portfolio site built with React to showcase projects, skills, and contact info; includes animated hero and modal project previews.',
     image: '/project/portfolio.png',
     category: 'Frontend',
-    tech: ['React', 'Html', 'Css', 'Js'],
+    tech: ['React', 'HTML', 'CSS', 'JavaScript'],
     liveUrl: 'https://radityabagushardana.netlify.app/',
     githubUrl: 'https://github.com/radityabhardana/My-Portfolio-2025',
     featured: false,
@@ -32,25 +35,25 @@ const sampleProjects = [
     description: 'News aggregator template with article listing, category filtering, and client-side search — built with HTML, CSS and vanilla JavaScript.',
     image: '/project/websiteberita.png',
     category: 'Frontend',
-    tech: ['Html', 'Css', 'Js'],
+    tech: ['HTML', 'CSS', 'JavaScript'],
     liveUrl: '#',
     githubUrl: '#',
     featured: false,
   },
   {
     id: 4,
-    title: 'Space engineering Website',
+    title: 'Space Engineering Website',
     description: 'Space-themed portfolio site featuring responsive layouts, subtle animations, and interactive UI components for showcasing work.',
     image: '/project/aether.png',
     category: 'Frontend',
-    tech: ['Html', 'Css', 'Js'],
+    tech: ['HTML', 'CSS', 'JavaScript'],
     liveUrl: '#',
     githubUrl: '#',
     featured: false,
   },
   {
     id: 5,
-    title: 'Ui/Ux Space Engineering',
+    title: 'UI/UX Space Engineering',
     description: 'UI/UX case study and Figma prototype focusing on space-themed dashboards, user flows and visual design systems.',
     image: '/project/figma.png',
     category: 'Design',
@@ -65,7 +68,7 @@ const sampleProjects = [
     description: 'Inventory management app with CRUD, stock tracking, and admin dashboards — implemented with PHP & MySQL and basic auth.',
     image: '/project/inventory.png',
     category: 'Fullstack',
-    tech: ['MySql', 'Html', 'Css', 'Js', 'Php'],
+    tech: ['MySQL', 'HTML', 'CSS', 'JavaScript', 'PHP'],
     liveUrl: '#',
     githubUrl: 'https://github.com/radityabhardana/Inventory-System',
     featured: false,
@@ -76,7 +79,7 @@ const sampleProjects = [
     description: 'Ticket reservation system with booking flow and seat selection; demonstrates reservation logic and basic backend handling.',
     image: '/project/tiketbus.png',
     category: 'Fullstack',
-    tech: ['Vb'],
+    tech: ['VB.NET'],
     liveUrl: '#',
     githubUrl: 'https://github.com/radityabhardana/Pemesanan-Tiket-Bus-VBNET',
     featured: false,
@@ -84,11 +87,12 @@ const sampleProjects = [
   {
     id: 8,
     title: 'Fashion E-commerce',
-    description: 'Ticket reservation system with booking flow and seat selection; demonstrates reservation logic and basic backend handling.',
+    // TODO(owner): verify/replace this placeholder description for Fashion E-commerce before publish
+    description: 'Fashion storefront with product showcase, category browsing, and responsive layout for a smooth shopping experience.',
     image: '/project/urban.png',
     category: 'Frontend',
-    tech: ['Html', 'Css', 'Js'],
-    liveUrl: 'urbancore.netlify.app',
+    tech: ['HTML', 'CSS', 'JavaScript'],
+    liveUrl: 'https://urbancore.netlify.app',
     githubUrl: 'https://github.com/radityabhardana/Urban-Core-Fashion-Website',
     featured: false,
   },
@@ -106,6 +110,34 @@ export default function Projects({ projects = sampleProjects, isSmallScreen = fa
   const [selectedProject, setSelectedProject] = useState(null);
   const [filter, setFilter] = useState('all');
   const [visibleCount, setVisibleCount] = useState(3);
+  const triggerRef = useRef(null);
+  const closeRef = useRef(null);
+
+  useEffect(() => {
+    if (selectedProject) closeRef.current?.focus();
+  }, [selectedProject]);
+
+  useEffect(() => {
+    if (!selectedProject) return;
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') setSelectedProject(null);
+      if (event.key === 'Tab' && closeRef.current) {
+        const focusable = [...document.querySelectorAll('.project-modal button, .project-modal a')];
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      }
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [selectedProject]);
+
+  useEffect(() => {
+    if (!selectedProject && triggerRef.current) { triggerRef.current.focus(); triggerRef.current = null; }
+    return undefined;
+  }, [selectedProject]);
 
   useEffect(() => {
     if (selectedProject) {
@@ -158,7 +190,19 @@ export default function Projects({ projects = sampleProjects, isSmallScreen = fa
               className={`project-card-wrapper ${project.featured ? 'featured' : ''}`}
               style={{ '--delay': `${idx * 0.1}s` }}
             >
-              <div className="project-card" onClick={() => setSelectedProject(project)}>
+              <div
+                className="project-card"
+                role="button"
+                tabIndex={0}
+                onClick={(event) => { triggerRef.current = event.currentTarget; setSelectedProject(project); }}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    triggerRef.current = event.currentTarget;
+                    setSelectedProject(project);
+                  }
+                }}
+              >
                 <div className="project-image-container">
                   <img src={project.image} alt={project.title} className="project-image" loading="lazy" />
                   <div className="project-overlay">
@@ -181,7 +225,7 @@ export default function Projects({ projects = sampleProjects, isSmallScreen = fa
                   </div>
 
                   <div className="project-links">
-                    {project.liveUrl && project.liveUrl !== '#' && (
+                    {project.liveUrl && project.liveUrl !== '#' ? (
                       <a
                         href={normalizeUrl(project.liveUrl)}
                         target="_blank"
@@ -192,8 +236,10 @@ export default function Projects({ projects = sampleProjects, isSmallScreen = fa
                         <FiExternalLink size={16} />
                         Live Demo
                       </a>
+                    ) : (
+                      <span className="project-link coming-soon">Coming soon</span>
                     )}
-                    {project.githubUrl && project.githubUrl !== '#' && (
+                    {project.githubUrl && project.githubUrl !== '#' ? (
                       <a
                         href={normalizeUrl(project.githubUrl)}
                         target="_blank"
@@ -204,6 +250,13 @@ export default function Projects({ projects = sampleProjects, isSmallScreen = fa
                         <FiGithub size={16} />
                         Source Code
                       </a>
+                    ) : (
+                      <span
+                        className="project-link coming-soon"
+                        aria-label="Coming soon"
+                      >
+                        Coming soon
+                      </span>
                     )}
                   </div>
                 </div>
@@ -232,6 +285,7 @@ export default function Projects({ projects = sampleProjects, isSmallScreen = fa
           onClick={() => setSelectedProject(null)}
           role="dialog"
           aria-modal="true"
+          aria-labelledby="project-modal-title"
         >
           {/* Mobile back button (easy to tap) */}
           {isSmallScreen && (
@@ -246,6 +300,7 @@ export default function Projects({ projects = sampleProjects, isSmallScreen = fa
 
           <div className="project-modal-content" onClick={(e) => e.stopPropagation()}>
             <button
+              ref={closeRef}
               className="project-modal-close"
               onClick={() => setSelectedProject(null)}
               aria-label="Close preview"
@@ -260,7 +315,7 @@ export default function Projects({ projects = sampleProjects, isSmallScreen = fa
 
               <div className="project-modal-text">
                 <div className="project-modal-badge">{selectedProject.category}</div>
-                <h2 className="project-modal-title">{selectedProject.title}</h2>
+                <h2 id="project-modal-title" className="project-modal-title">{selectedProject.title}</h2>
                 <p className="project-modal-description">{selectedProject.description}</p>
 
                 <div className="project-modal-tech">
@@ -295,6 +350,12 @@ export default function Projects({ projects = sampleProjects, isSmallScreen = fa
                       GitHub Repository
                     </a>
                   )}
+                  {(!selectedProject.liveUrl || selectedProject.liveUrl === '#') &&
+                    (!selectedProject.githubUrl || selectedProject.githubUrl === '#') && (
+                      <span className="project-modal-btn coming-soon" aria-label="Coming soon">
+                        Coming soon
+                      </span>
+                    )}
                 </div>
               </div>
             </div>

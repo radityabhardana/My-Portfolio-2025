@@ -15,14 +15,14 @@ const SEO_CONFIG = {
   // Author information
   author: {
     name: "Raditya Bagus Hardana",
-    email: "your-email@example.com",
+    email: "rexnabagus@gmail.com",
     title: "Web Developer & Web 3 Developer",
     bio: "Web Developer & Web 3 Developer specializing in React, Next.js, TypeScript, JavaScript, and Blockchain technologies.",
     image: "https://radityabagushardana.vercel.app/img/title.png",
     social: {
-      github: "https://github.com/radityabagus",
-      linkedin: "https://linkedin.com/in/radityabagushardana",
-      twitter: "https://twitter.com/radityabagus",
+      github: "https://github.com/radityabhardana",
+      linkedin: "https://www.linkedin.com/in/raditya-hardana-962373382/",
+      instagram: "https://www.instagram.com/zxlyn_16/",
     },
   },
 
@@ -138,8 +138,9 @@ const SEO_CONFIG = {
   // Twitter Card defaults
   twitter: {
     card: "summary_large_image",
-    site: "@radityabagus", // Add your Twitter handle
-    creator: "@radityabagus",
+    // TODO: confirm the owner's Twitter/X handle. No account URL was found in the repo, so none is inferred.
+    site: "",
+    creator: "", // Add your Twitter handle
   },
 };
 
