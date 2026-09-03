@@ -1,33 +1,19 @@
-Smooth scrolling implemented
-==========================
+Smooth Scrolling & Navigation Stability
+=========================================
 
-What I changed
---------------
+What was changed & resolved
+---------------------------
 
-- Added a lightweight hook: `src/hooks/useSmoothScroll.js`.
-  - Intercepts wheel and touch events (non-passive) and animates `window.scrollTo()` with a lerp easing.
-  - Uses real window scroll so all existing fixed elements keep their behavior — this is important for your layout (nav, profile card, etc.).
-  - Safe to use with GSAP / ScrollTrigger because it updates the real scroll position.
+1. **Native Smooth Scrolling (120Hz Hardware-Accelerated)**:
+   - Replaced synthetic lerp scrolljacking with native CSS `html { scroll-behavior: smooth; }`.
+   - Restored natural Windows Precision Touchpad and macOS trackpad momentum inertia (no artificial floaty lag or delay).
+   - Eliminated `e.preventDefault()` on wheel and touch events, restoring pinch-to-zoom accessibility.
 
-- Enabled a CSS fallback: `html { scroll-behavior: smooth; }` in `src/index.css` for native smooth anchor navigation.
+2. **Navigation Lock (`isNavigatingRef`)**:
+   - Added programmatic scroll locking during navbar/button clicks in `src/App.jsx`.
+   - Prevents scroll listener race conditions where intermediate section offsets would jitter/flicker the active nav indicator while scrolling to the target section.
 
-How to tune behavior
---------------------
-
-You can tweak smoothing via the options you pass to the hook inside `src/App.jsx`:
-
-- `ease` — how quickly the animated scroll eases into the target (0..1). Use smaller numbers for a softer, longer smoothing.
-- `mouseMultiplier` — scales wheel delta (higher = more aggressive per wheel tick).
-- `touchMultiplier` — scales touch drag delta (higher = more aggressive).
-
-Example usage (already added):
-
-useSmoothScroll({ ease: 0.12, mouseMultiplier: 1, touchMultiplier: 2 })
-
-Notes / tradeoffs
------------------
-
-- This hook intentionally doesn't transform the whole page (so position:fixed still works as expected). It animates the real window scroll; that keeps ScrollTrigger and other scroll listeners compatible.
-- We attach non-passive wheel/touch listeners and call preventDefault. That is needed to capture wheel/touch and animate manually. The implementation focuses on a smooth, natural feeling but doesn't attempt to replace all edge cases (e.g. very large programmatic scroll jumps).
-
-If you'd like a transform-based approach with pinch/overscroll inertia and scroll snapping, I can add a transform-based scroller that wires into ScrollTrigger via scrollerProxy — but that requires additional adjustments to fixed elements.
+3. **Layout & Scrollbar Stability**:
+   - Added `scrollbar-gutter: stable` to `html` to prevent 17px layout shifts when opening project/certificate modals.
+   - Set `body { min-height: 100vh; }` instead of `height: 100%` to ensure accurate document scroll height calculation across all browsers.
+   - Hero banner and profile card fadeout is now continuously synchronized with GSAP ScrollTrigger `scrub: true` for flawless visual transitions.

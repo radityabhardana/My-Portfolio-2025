@@ -20,7 +20,6 @@ import Contact from "./components/Contact.jsx";
 import AboutSection from "./sections/AboutSection.jsx";
 import SkillsSection from "./sections/SkillsSection.jsx";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
-import useSmoothScroll from "./hooks/useSmoothScroll";
 
 // Heavy WebGL background — lazy-loaded so the ~600KB Three.js chunk
 // does not block first paint / initial render of the rest of the app.
@@ -46,9 +45,6 @@ const handleDownloadCV = () => {
 };
 
 export default function App() {
-  // enable global smoothing for wheel / touch scroll
-  // tweak parameters if you want a stiffer or looser feel
-  useSmoothScroll({ ease: 0.12, mouseMultiplier: 1, touchMultiplier: 2 });
   // tune LiquidEther rendering quality based on device capabilities
   // (avoid heavy WebGL simulation on very small / low-memory devices)
   let liquidResolution = 0.5;
@@ -107,11 +103,33 @@ export default function App() {
   const skillsRef = useRef(null);
   const [activeNavIndex, setActiveNavIndex] = useState(0);
   const scrollTimeoutRef = useRef(null);
+  const isNavigatingRef = useRef(false);
+  const navLockTimeoutRef = useRef(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Smoothly navigate to section without scroll-listener race conditions
+  const navigateToSection = (idx, href) => {
+    setActiveNavIndex(idx);
+    isNavigatingRef.current = true;
+    if (navLockTimeoutRef.current) clearTimeout(navLockTimeoutRef.current);
+    navLockTimeoutRef.current = setTimeout(() => {
+      isNavigatingRef.current = false;
+    }, 850);
+
+    if (href && href.startsWith("#")) {
+      const el = document.querySelector(href);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+  };
 
   // Track which section is in view and update active nav
   useEffect(() => {
     const handleScroll = () => {
+      // Do not override active index while programmatically scrolling to a clicked section
+      if (isNavigatingRef.current) return;
+
       const homeEl = document.getElementById("home");
       const aboutEl = document.getElementById("about");
       const skillsEl = document.getElementById("skills");
@@ -153,6 +171,7 @@ export default function App() {
     return () => {
       window.removeEventListener("scroll", throttledScroll);
       if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+      if (navLockTimeoutRef.current) clearTimeout(navLockTimeoutRef.current);
     };
   }, []);
 
@@ -234,13 +253,7 @@ export default function App() {
             particleR={100}
             activeIndex={activeNavIndex}
             onActiveChange={(idx) => {
-              setActiveNavIndex(idx);
-              const href = items[idx]?.href;
-              if (href && href.startsWith("#")) {
-                const el = document.querySelector(href);
-                if (el)
-                  el.scrollIntoView({ behavior: "smooth", block: "start" });
-              }
+              navigateToSection(idx, items[idx]?.href);
             }}
             animationTime={600}
             timeVariance={300}
@@ -292,13 +305,7 @@ export default function App() {
               type="button"
               role="menuitem"
               onClick={() => {
-                setActiveNavIndex(idx);
-                const href = item.href;
-                if (href && href.startsWith("#")) {
-                  const el = document.querySelector(href);
-                  if (el)
-                    el.scrollIntoView({ behavior: "smooth", block: "start" });
-                }
+                navigateToSection(idx, item.href);
                 setIsMobileMenuOpen(false);
               }}
               style={{
@@ -347,7 +354,7 @@ export default function App() {
         id="home"
       >
         <div
-          className={`home-main ${activeNavIndex > 0 ? "home-hidden" : ""}`}
+          className="home-main"
           style={
             isSmallScreen
               ? {
@@ -484,17 +491,13 @@ export default function App() {
             <button
               className="btn-primary"
               onClick={() => {
-                const el = document.getElementById('contact');
-                if (el) {
-                  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                  setActiveNavIndex(5);
-                  setIsMobileMenuOpen(false);
-                  // focus the name input after scroll animation completes
-                  setTimeout(() => {
-                    const nameInput = document.getElementById('from_name');
-                    if (nameInput) nameInput.focus();
-                  }, 600);
-                }
+                navigateToSection(5, '#contact');
+                setIsMobileMenuOpen(false);
+                // focus the name input after scroll animation completes
+                setTimeout(() => {
+                  const nameInput = document.getElementById('from_name');
+                  if (nameInput) nameInput.focus();
+                }, 600);
               }}
             >
               <i className="bi bi-arrow-right" style={{ marginRight: "10px" }} aria-hidden="true"></i>
@@ -567,7 +570,7 @@ export default function App() {
         {/* Desktop Profile Card - fixed position */}
         {!isSmallScreen && (
           <div
-            className={`home-profile ${activeNavIndex > 0 ? "home-hidden" : ""}`}
+            className="home-profile"
             style={{
               position: "fixed",
               top: "20%",

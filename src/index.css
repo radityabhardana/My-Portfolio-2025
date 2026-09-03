@@ -10,24 +10,18 @@
   z-index: 20;
 }
 
-.home-main, .home-profile {
-  transition: opacity 0.35s ease, visibility 0.35s ease;
-}
-
-.home-hidden {
-  opacity: 0 !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-}
-
-html, body {
+html {
   width: 100%;
-  height: 100%;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+}
+
+body {
+  width: 100%;
+  min-height: 100vh;
   overflow-x: hidden;
 }
-
-/* Small native fallback for anchor links and some browsers */
-html { scroll-behavior: smooth; }
 
 /* Preserve a visible, high-contrast keyboard focus indicator without changing the visual design. */
 :focus-visible {
