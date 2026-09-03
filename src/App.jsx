@@ -347,7 +347,7 @@ export default function App() {
         id="home"
       >
         <div
-          className="home-main"
+          className={`home-main ${activeNavIndex > 0 ? "home-hidden" : ""}`}
           style={
             isSmallScreen
               ? {
@@ -460,14 +460,14 @@ export default function App() {
           >
             <div className="glass-card">
               <span style={{ fontSize: "1.1rem", marginRight: "11px" }}>
-                <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
+                <i className="bi bi-geo-alt-fill" aria-hidden="true"></i>
               </span>
               <span>Based in Indonesia</span>
             </div>
             {!isSmallScreen && (
               <div className="glass-card">
                 <span style={{ fontSize: "1.1rem", marginRight: "11px" }}>
-                  <i class="bi bi-briefcase-fill" aria-hidden="true"></i>
+                  <i className="bi bi-briefcase-fill" aria-hidden="true"></i>
                 </span>
                 <span>Ready to work</span>
               </div>
@@ -531,7 +531,7 @@ export default function App() {
                 className="social-icon"
                 aria-label="LinkedIn profile"
               >
-                <i class="bi bi-linkedin" aria-hidden="true"></i>
+                <i className="bi bi-linkedin" aria-hidden="true"></i>
               </a>
               <a
                 href="https://github.com/radityabhardana"
@@ -540,7 +540,7 @@ export default function App() {
                 className="social-icon"
                 aria-label="GitHub profile"
               >
-                <i class="bi bi-github" aria-hidden="true"></i>
+                <i className="bi bi-github" aria-hidden="true"></i>
               </a>
 
               <a
@@ -550,7 +550,7 @@ export default function App() {
                 className="social-icon"
                 aria-label="Instagram profile"
               >
-                <i class="bi bi-instagram" aria-hidden="true"></i>
+                <i className="bi bi-instagram" aria-hidden="true"></i>
               </a>
               <a
                 href="https://wa.me/628892274986"
@@ -559,7 +559,7 @@ export default function App() {
                 className="social-icon"
                 aria-label="WhatsApp"
               >
-                <i class="bi bi-whatsapp" aria-hidden="true"></i>
+                <i className="bi bi-whatsapp" aria-hidden="true"></i>
               </a>
             </div>
           </div>
@@ -567,7 +567,7 @@ export default function App() {
         {/* Desktop Profile Card - fixed position */}
         {!isSmallScreen && (
           <div
-            className="home-profile"
+            className={`home-profile ${activeNavIndex > 0 ? "home-hidden" : ""}`}
             style={{
               position: "fixed",
               top: "20%",

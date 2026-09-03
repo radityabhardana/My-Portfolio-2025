@@ -175,7 +175,10 @@ export default function Projects({ projects = sampleProjects, isSmallScreen = fa
             <button
               key={cat}
               className={`filter-btn ${filter === cat ? 'active' : ''}`}
-              onClick={() => setFilter(cat)}
+              onClick={() => {
+                setFilter(cat);
+                setVisibleCount(3);
+              }}
             >
               {cat.charAt(0).toUpperCase() + cat.slice(1)}
             </button>

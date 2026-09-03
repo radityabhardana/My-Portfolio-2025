@@ -19,13 +19,12 @@ export default function AboutSection({ isSmallScreen }) {
     const aboutEl = aboutSectionRef.current;
     if (!aboutEl) return;
 
-    // Animate blur + opacity on scroll
-    gsap.fromTo(
+    // Animate opacity on scroll cleanly
+    const tween = gsap.fromTo(
       aboutEl,
-      { opacity: 0, filter: "blur(20px)" },
+      { opacity: 0 },
       {
         opacity: 1,
-        filter: "blur(0px)",
         scrollTrigger: {
           trigger: aboutEl,
           start: "top 80%",
@@ -36,7 +35,10 @@ export default function AboutSection({ isSmallScreen }) {
     );
 
     return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      try {
+        tween.scrollTrigger && tween.scrollTrigger.kill();
+        tween.kill();
+      } catch (e) {}
     };
   }, []);
 
@@ -49,7 +51,7 @@ export default function AboutSection({ isSmallScreen }) {
     // Make the heading fade / unblur in as the About section scrolls into view
     const hTween = gsap.fromTo(
       heading,
-      { opacity: 0, filter: "blur(8px)" },
+      { opacity: 0, filter: "blur(6px)" },
       {
         opacity: 1,
         filter: "blur(0px)",
@@ -66,56 +68,47 @@ export default function AboutSection({ isSmallScreen }) {
     return () => {
       try {
         hTween.scrollTrigger && hTween.scrollTrigger.kill();
-      } catch (e) {}
-      try {
-        hTween.kill && hTween.kill();
+        hTween.kill();
       } catch (e) {}
     };
   }, []);
 
-  // Blur the banner elements as the About section scrolls into view (lighter blur + no heavy blurs on small screens)
+  // Smoothly fade out the fixed hero banner and card as user scrolls into About section
   useEffect(() => {
     const about = aboutSectionRef.current;
     const home = document.getElementById("home");
     const main = document.querySelector(".home-main");
     const profile = document.querySelector(".home-profile");
-    // try both the wrapper and the inner LiquidEther if present
     const bgWrapper = document.querySelector(".home-bg-wrapper");
     const bg = document.querySelector(".home-bg") || bgWrapper;
 
     if (!about || !home) return;
-
-    // Skip heavy blurs on small screens — keep effect light on desktop
     if (isSmallScreen) return;
 
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: about,
-        start: "top 85%",
-        end: "top 30%",
+        start: "top 90%",
+        end: "top 25%",
         scrub: true,
       },
     });
 
-    // lighter blur values to reduce paint cost and visual heaviness
-    if (main)
-      tl.to(main, { filter: "blur(3px)", opacity: 0.92, ease: "none" }, 0);
-    if (profile)
-      tl.to(profile, { filter: "blur(2px)", opacity: 0.95, ease: "none" }, 0);
-    if (bg)
-      tl.to(
-        bg,
-        { filter: "blur(2px) saturate(90%)", opacity: 0.97, ease: "none" },
-        0
-      );
-    tl.to(home, { filter: "blur(1px)", opacity: 0.99, ease: "none" }, 0);
+    // Clean opacity fadeout (no heavy CSS blur on WebGL canvas to preserve 60fps)
+    if (main) {
+      tl.to(main, { opacity: 0, y: -30, ease: "none", pointerEvents: "none" }, 0);
+    }
+    if (profile) {
+      tl.to(profile, { opacity: 0, y: -30, ease: "none", pointerEvents: "none" }, 0);
+    }
+    if (bg) {
+      tl.to(bg, { opacity: 0.25, ease: "none" }, 0);
+    }
 
     return () => {
       try {
         tl.scrollTrigger && tl.scrollTrigger.kill();
-      } catch (e) {}
-      try {
-        tl.kill && tl.kill();
+        tl.kill();
       } catch (e) {}
     };
   }, [isSmallScreen]);
@@ -259,28 +252,112 @@ export default function AboutSection({ isSmallScreen }) {
               className="about-content-right"
               style={{
                 display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                maxWidth: "40%",
-                height: "auto",
+                flexDirection: "column",
+                gap: "16px",
+                width: "42%",
+                marginTop: "5rem",
               }}
             >
+              <div
+                style={{
+                  background: "linear-gradient(135deg, rgba(82, 39, 255, 0.12), rgba(157, 78, 221, 0.06))",
+                  border: "1px solid rgba(82, 39, 255, 0.25)",
+                  borderRadius: "16px",
+                  padding: "24px",
+                  backdropFilter: "blur(12px)",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "20px",
+                  boxShadow: "0 8px 32px rgba(0,0,0,0.37)",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+                  <div
+                    style={{
+                      width: "46px",
+                      height: "46px",
+                      borderRadius: "12px",
+                      background: "rgba(82, 39, 255, 0.2)",
+                      border: "1px solid rgba(82, 39, 255, 0.35)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "#B19EEF",
+                      fontSize: "1.35rem",
+                      flexShrink: 0,
+                    }}
+                  >
+                    <i className="bi bi-code-slash" aria-hidden="true"></i>
+                  </div>
+                  <div>
+                    <h4 style={{ color: "#fff", margin: 0, fontSize: "1.05rem", fontFamily: "'Poppins', sans-serif", fontWeight: 600 }}>
+                      Full Stack & Web3
+                    </h4>
+                    <p style={{ color: "rgba(255,255,255,0.65)", margin: "4px 0 0", fontSize: "0.86rem", fontFamily: "'Poppins', sans-serif" }}>
+                      Modern React, Next.js, and Smart Contracts
+                    </p>
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+                  <div
+                    style={{
+                      width: "46px",
+                      height: "46px",
+                      borderRadius: "12px",
+                      background: "rgba(82, 39, 255, 0.2)",
+                      border: "1px solid rgba(82, 39, 255, 0.35)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "#B19EEF",
+                      fontSize: "1.35rem",
+                      flexShrink: 0,
+                    }}
+                  >
+                    <i className="bi bi-award-fill" aria-hidden="true"></i>
+                  </div>
+                  <div>
+                    <h4 style={{ color: "#fff", margin: 0, fontSize: "1.05rem", fontFamily: "'Poppins', sans-serif", fontWeight: 600 }}>
+                      Certified Developer
+                    </h4>
+                    <p style={{ color: "rgba(255,255,255,0.65)", margin: "4px 0 0", fontSize: "0.86rem", fontFamily: "'Poppins', sans-serif" }}>
+                      AWS & Binance Node Runner Program
+                    </p>
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+                  <div
+                    style={{
+                      width: "46px",
+                      height: "46px",
+                      borderRadius: "12px",
+                      background: "rgba(82, 39, 255, 0.2)",
+                      border: "1px solid rgba(82, 39, 255, 0.35)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "#B19EEF",
+                      fontSize: "1.35rem",
+                      flexShrink: 0,
+                    }}
+                  >
+                    <i className="bi bi-lightning-charge-fill" aria-hidden="true"></i>
+                  </div>
+                  <div>
+                    <h4 style={{ color: "#fff", margin: 0, fontSize: "1.05rem", fontFamily: "'Poppins', sans-serif", fontWeight: 600 }}>
+                      Performance & Precision
+                    </h4>
+                    <p style={{ color: "rgba(255,255,255,0.65)", margin: "4px 0 0", fontSize: "0.86rem", fontFamily: "'Poppins', sans-serif" }}>
+                      Responsive layouts & fluid micro-interactions
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
         </div>
-
-        {!isSmallScreen && (
-          <div
-            style={{
-              width: "100%",
-              height: "0px",
-              display: "flex",
-              alignItems: "center",
-              marginTop: "0px",
-            }}
-          >
-          </div>
-        )}
       </div>
     </div>
   );

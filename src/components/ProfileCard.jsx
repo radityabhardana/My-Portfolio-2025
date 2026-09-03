@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback, useMemo } from 'react';
+import React, { useEffect, useRef, useCallback, useMemo, useState } from 'react';
 import './ProfileCard.css';
 
 const DEFAULT_INNER_GRADIENT = 'linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)';
@@ -43,22 +43,22 @@ const ProfileCardComponent = ({
 
   const enterTimerRef = useRef(null);
   const leaveRafRef = useRef(null);
-  const isTouchDevice = useRef(false);
-  const isMobileDevice = useRef(false);
+  const [isTouchOrMobile, setIsTouchOrMobile] = useState(false);
 
   // Detect if device supports touch and mobile screen
   useEffect(() => {
-    isTouchDevice.current = ('ontouchstart' in window) ||
-                            (navigator.maxTouchPoints > 0) ||
-                            (navigator.msMaxTouchPoints > 0);
-    // Detect mobile screen size
-    isMobileDevice.current = window.innerWidth < 768;
+    const isTouch = (typeof window !== 'undefined') &&
+      (('ontouchstart' in window) ||
+       (navigator.maxTouchPoints > 0) ||
+       (navigator.msMaxTouchPoints > 0));
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    setIsTouchOrMobile(isTouch || isMobile);
   }, []);
 
   const tiltEngine = useMemo(() => {
     // Disable tilt on touch devices and mobile - too heavy for mobile performance
-    if (!enableTilt || isTouchDevice.current || isMobileDevice.current) return null;
-
+    if (!enableTilt || isTouchOrMobile) return null;
+x``
     let rafId = null;
     let running = false;
     let lastTs = 0;
@@ -166,7 +166,7 @@ const ProfileCardComponent = ({
         lastTs = 0;
       }
     };
-  }, [enableTilt, isTouchDevice]);
+  }, [enableTilt, isTouchOrMobile]);
 
   const getOffsets = (evt, el) => {
     const rect = el.getBoundingClientRect();

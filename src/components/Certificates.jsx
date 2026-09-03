@@ -133,7 +133,10 @@ export default function Certificates({ certificates = sampleCertificates, isSmal
             <button
               key={cat}
               className={`filter-btn ${filter === cat ? 'active' : ''}`}
-              onClick={() => setFilter(cat)}
+              onClick={() => {
+                setFilter(cat);
+                setVisibleCount(2);
+              }}
             >
               {cat.charAt(0).toUpperCase() + cat.slice(1)}
             </button>
