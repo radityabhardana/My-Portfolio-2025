@@ -21,7 +21,8 @@ export default function LiquidEther({
   autoIntensity = 2.2,
   takeoverDuration = 0.25,
   autoResumeDelay = 1000,
-  autoRampDuration = 0.6
+  autoRampDuration = 0.6,
+  isPaused = false
 }) {
   // Detect mobile device for optimization
   const isMobileDevice = () => {
@@ -1094,7 +1095,7 @@ export default function LiquidEther({
         const isVisible = entry.isIntersecting && entry.intersectionRatio > 0;
         isVisibleRef.current = isVisible;
         if (!webglRef.current) return;
-        if (isVisible && !document.hidden) {
+        if (isVisible && !document.hidden && !isPaused) {
           webglRef.current.start();
         } else {
           webglRef.current.pause();
@@ -1105,6 +1106,16 @@ export default function LiquidEther({
     );
     io.observe(container);
     intersectionObserverRef.current = io;
+
+    const handleVisibilityChange = () => {
+      if (!webglRef.current) return;
+      if (document.hidden || isPaused) {
+        webglRef.current.pause();
+      } else if (isVisibleRef.current) {
+        webglRef.current.start();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     const ro = new ResizeObserver(() => {
       if (!webglRef.current) return;
@@ -1118,6 +1129,7 @@ export default function LiquidEther({
     resizeObserverRef.current = ro;
 
     return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       if (resizeObserverRef.current) {
         try {
@@ -1155,8 +1167,19 @@ export default function LiquidEther({
     autoIntensity,
     takeoverDuration,
     autoResumeDelay,
-    autoRampDuration
+    autoRampDuration,
+    isPaused
   ]);
+
+  // Dynamically pause/resume WebGL when isPaused prop toggles
+  useEffect(() => {
+    if (!webglRef.current) return;
+    if (isPaused) {
+      webglRef.current.pause();
+    } else if (isVisibleRef.current && !document.hidden) {
+      webglRef.current.start();
+    }
+  }, [isPaused]);
 
   useEffect(() => {
     const webgl = webglRef.current;

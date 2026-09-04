@@ -14,12 +14,25 @@ import {
   SiCss3,
   SiFigma,
 } from "react-icons/si";
-import Certificates from "./components/Certificates.jsx";
-import Projects from "./components/Projects.jsx";
-import Contact from "./components/Contact.jsx";
+import {
+  BsX,
+  BsList,
+  BsGeoAltFill,
+  BsBriefcaseFill,
+  BsArrowRight,
+  BsDownload,
+  BsLinkedin,
+  BsGithub,
+  BsInstagram,
+  BsWhatsapp,
+} from "react-icons/bs";
 import AboutSection from "./sections/AboutSection.jsx";
 import SkillsSection from "./sections/SkillsSection.jsx";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
+
+const Certificates = lazy(() => import("./components/Certificates.jsx"));
+const Projects = lazy(() => import("./components/Projects.jsx"));
+const Contact = lazy(() => import("./components/Contact.jsx"));
 
 // Heavy WebGL background — lazy-loaded so the ~600KB Three.js chunk
 // does not block first paint / initial render of the rest of the app.
@@ -240,10 +253,7 @@ export default function App() {
               padding: "8px",
             }}
           >
-            <i
-              className={`bi ${isMobileMenuOpen ? "bi-x" : "bi-list"}`}
-              aria-hidden="true"
-            ></i>
+            {isMobileMenuOpen ? <BsX aria-hidden="true" size={28} /> : <BsList aria-hidden="true" size={28} />}
           </button>
         ) : (
           <GooeyNav
@@ -429,8 +439,8 @@ export default function App() {
                 handle="javicodes"
                 status="Online"
                 contactText="Contact Me"
-                avatarUrl="/img/bosganteng.png"
-                iconUrl="/img/tag_card.png"
+                avatarUrl="/img/bosganteng.webp"
+                iconUrl="/img/tag_card.webp"
                 iconSize="320%"
                 showUserInfo={false}
                 enableTilt={true}
@@ -466,15 +476,15 @@ export default function App() {
             }}
           >
             <div className="glass-card">
-              <span style={{ fontSize: "1.1rem", marginRight: "11px" }}>
-                <i className="bi bi-geo-alt-fill" aria-hidden="true"></i>
+              <span style={{ fontSize: "1.1rem", marginRight: "11px", display: "inline-flex", alignItems: "center" }}>
+                <BsGeoAltFill aria-hidden="true" />
               </span>
               <span>Based in Indonesia</span>
             </div>
             {!isSmallScreen && (
               <div className="glass-card">
-                <span style={{ fontSize: "1.1rem", marginRight: "11px" }}>
-                  <i className="bi bi-briefcase-fill" aria-hidden="true"></i>
+                <span style={{ fontSize: "1.1rem", marginRight: "11px", display: "inline-flex", alignItems: "center" }}>
+                  <BsBriefcaseFill aria-hidden="true" />
                 </span>
                 <span>Ready to work</span>
               </div>
@@ -500,11 +510,11 @@ export default function App() {
                 }, 600);
               }}
             >
-              <i className="bi bi-arrow-right" style={{ marginRight: "10px" }} aria-hidden="true"></i>
+              <BsArrowRight aria-hidden="true" style={{ marginRight: "10px" }} />
               Hire Me
             </button>
             <button className="btn-secondary" onClick={handleDownloadCV}>
-              <i className="bi bi-download" style={{ marginRight: "10px" }} aria-hidden="true"></i>
+              <BsDownload aria-hidden="true" style={{ marginRight: "10px" }} />
               Download CV
             </button>
           </div>
@@ -534,7 +544,7 @@ export default function App() {
                 className="social-icon"
                 aria-label="LinkedIn profile"
               >
-                <i className="bi bi-linkedin" aria-hidden="true"></i>
+                <BsLinkedin aria-hidden="true" />
               </a>
               <a
                 href="https://github.com/radityabhardana"
@@ -543,7 +553,7 @@ export default function App() {
                 className="social-icon"
                 aria-label="GitHub profile"
               >
-                <i className="bi bi-github" aria-hidden="true"></i>
+                <BsGithub aria-hidden="true" />
               </a>
 
               <a
@@ -553,7 +563,7 @@ export default function App() {
                 className="social-icon"
                 aria-label="Instagram profile"
               >
-                <i className="bi bi-instagram" aria-hidden="true"></i>
+                <BsInstagram aria-hidden="true" />
               </a>
               <a
                 href="https://wa.me/628892274986"
@@ -562,7 +572,7 @@ export default function App() {
                 className="social-icon"
                 aria-label="WhatsApp"
               >
-                <i className="bi bi-whatsapp" aria-hidden="true"></i>
+                <BsWhatsapp aria-hidden="true" />
               </a>
             </div>
           </div>
@@ -583,8 +593,8 @@ export default function App() {
               handle="javicodes"
               status="Online"
               contactText="Contact Me"
-              avatarUrl="/img/bosganteng.png"
-              iconUrl="/img/tag_card.png"
+              avatarUrl="/img/bosganteng.webp"
+              iconUrl="/img/tag_card.webp"
               iconSize="320%"
               showUserInfo={false}
               enableTilt={true}
@@ -628,6 +638,7 @@ export default function App() {
                 takeoverDuration={0.25}
                 autoResumeDelay={3000}
                 autoRampDuration={0.6}
+                isPaused={activeNavIndex > 0}
               />
             </Suspense>
           ) : (
@@ -692,7 +703,9 @@ export default function App() {
         }}
         id="certificates"
       >
-        <Certificates isSmallScreen={isSmallScreen} />
+        <Suspense fallback={<div style={{ minHeight: "300px" }} />}>
+          <Certificates isSmallScreen={isSmallScreen} />
+        </Suspense>
       </section>
 
       {/* Projects Section */}
@@ -712,12 +725,16 @@ export default function App() {
         id="projects"
       >
         <div style={{ width: "100%", maxWidth: 1200, boxSizing: "border-box" }}>
-          <Projects isSmallScreen={isSmallScreen} />
+          <Suspense fallback={<div style={{ minHeight: "300px" }} />}>
+            <Projects isSmallScreen={isSmallScreen} />
+          </Suspense>
         </div>
       </section>
 
       {/* Contact Section */}
-      <Contact />
+      <Suspense fallback={<div style={{ minHeight: "300px" }} />}>
+        <Contact />
+      </Suspense>
       </div>
     </>
   );

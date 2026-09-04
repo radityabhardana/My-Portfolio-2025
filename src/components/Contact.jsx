@@ -1,6 +1,18 @@
 import React, { useRef, useState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
 import { BiEnvelope } from 'react-icons/bi';
+import {
+  BsEnvelopeFill,
+  BsTelephoneFill,
+  BsGeoAltFill,
+  BsLinkedin,
+  BsGithub,
+  BsInstagram,
+  BsWhatsapp,
+  BsCheckCircleFill,
+  BsExclamationCircleFill,
+  BsSendFill
+} from 'react-icons/bs';
 import './Contact.css';
 
 // EmailJS configuration (set in .env.local for Vite):
@@ -160,7 +172,7 @@ Get In Touch
 
             <div className="contact-item">
               <div className="contact-icon">
-                <i className="bi bi-envelope-fill"></i>
+                <BsEnvelopeFill />
               </div>
               <div className="contact-text">
                 <h4>Email</h4>
@@ -170,7 +182,7 @@ Get In Touch
 
             <div className="contact-item">
               <div className="contact-icon">
-                <i className="bi bi-telephone-fill"></i>
+                <BsTelephoneFill />
               </div>
               <div className="contact-text">
                 <h4>Phone</h4>
@@ -180,7 +192,7 @@ Get In Touch
 
             <div className="contact-item">
               <div className="contact-icon">
-                <i className="bi bi-geo-alt-fill"></i>
+                <BsGeoAltFill />
               </div>
               <div className="contact-text">
                 <h4>Location</h4>
@@ -200,18 +212,18 @@ Get In Touch
                 Follow Me
               </p>
               <div style={{ display: 'flex', gap: '16.5px' }}>
-                <a href="https://www.linkedin.com/in/raditya-hardana-962373382/" target="_blank" rel="noopener noreferrer" className="social-icon">
-                  <i className="bi bi-linkedin"></i>
+                <a href="https://www.linkedin.com/in/raditya-hardana-962373382/" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="LinkedIn">
+                  <BsLinkedin />
                 </a>
-                <a href="https://github.com/radityabhardana" target="_blank" rel="noopener noreferrer" className="social-icon">
-                  <i className="bi bi-github"></i>
+                <a href="https://github.com/radityabhardana" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="GitHub">
+                  <BsGithub />
                 </a>
                
-                <a href="https://www.instagram.com/zxlyn_16/" target="_blank" rel="noopener noreferrer" className="social-icon">
-                  <i className="bi bi-instagram"></i>
+                <a href="https://www.instagram.com/zxlyn_16/" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Instagram">
+                  <BsInstagram />
                 </a>
-                <a href="https://wa.me/628892274986" target="_blank" rel="noopener noreferrer" className="social-icon">
-                  <i className="bi bi-whatsapp"></i>
+                <a href="https://wa.me/628892274986" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="WhatsApp">
+                  <BsWhatsapp />
                 </a>
               </div>
             </div>
@@ -266,14 +278,14 @@ Get In Touch
 
             {status === 'success' && (
               <div role="status" aria-live="polite" className="alert alert-success">
-                <i className="bi bi-check-circle-fill" aria-hidden="true"></i>
+                <BsCheckCircleFill aria-hidden="true" />
                 <span>Message sent successfully! I'll be in touch soon.</span>
               </div>
             )}
 
             {status === 'error' && error && (
               <div role="alert" className="alert alert-error">
-                <i className="bi bi-exclamation-circle-fill" aria-hidden="true"></i>
+                <BsExclamationCircleFill aria-hidden="true" />
                 <span>{error}</span>
               </div>
             )}
@@ -291,7 +303,7 @@ Get In Touch
                 </>
               ) : (
                 <>
-                  <i className="bi bi-send-fill" aria-hidden="true"></i>
+                  <BsSendFill aria-hidden="true" style={{ marginRight: '8px' }} />
                   <span>Send Message</span>
                 </>
               )}
@@ -317,17 +329,17 @@ Get In Touch
                 margin: '0 0 6.5px 0'
               }}>Follow Me</p>
               <div className="follow-links" style={{ display: 'flex', gap: '16.5px' }}>
-                <a href="https://www.linkedin.com/in/raditya-hardana-962373382/" target="_blank" rel="noopener noreferrer" className="social-icon">
-                  <i className="bi bi-linkedin"></i>
+                <a href="https://www.linkedin.com/in/raditya-hardana-962373382/" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="LinkedIn">
+                  <BsLinkedin />
                 </a>
-                <a href="https://github.com/radityabhardana" target="_blank" rel="noopener noreferrer" className="social-icon">
-                  <i className="bi bi-github"></i>
+                <a href="https://github.com/radityabhardana" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="GitHub">
+                  <BsGithub />
                 </a>
-                <a href="https://www.instagram.com/zxlyn_16/" target="_blank" rel="noopener noreferrer" className="social-icon">
-                  <i className="bi bi-instagram"></i>
+                <a href="https://www.instagram.com/zxlyn_16/" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Instagram">
+                  <BsInstagram />
                 </a>
-                <a href="https://wa.me/628892274986" target="_blank" rel="noopener noreferrer" className="social-icon">
-                  <i className="bi bi-whatsapp"></i>
+                <a href="https://wa.me/628892274986" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="WhatsApp">
+                  <BsWhatsapp />
                 </a>
               </div>
             </div>

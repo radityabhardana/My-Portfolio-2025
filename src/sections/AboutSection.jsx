@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import ScrollReveal from "../components/ScrollReveal.jsx";
 import SplitText from "../components/SplitText.jsx";
 import { BiUser } from "react-icons/bi";
+import { BsCodeSlash, BsAwardFill, BsLightningChargeFill } from "react-icons/bs";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -287,7 +288,7 @@ export default function AboutSection({ isSmallScreen }) {
                       flexShrink: 0,
                     }}
                   >
-                    <i className="bi bi-code-slash" aria-hidden="true"></i>
+                    <BsCodeSlash aria-hidden="true" />
                   </div>
                   <div>
                     <h4 style={{ color: "#fff", margin: 0, fontSize: "1.05rem", fontFamily: "'Poppins', sans-serif", fontWeight: 600 }}>
@@ -315,7 +316,7 @@ export default function AboutSection({ isSmallScreen }) {
                       flexShrink: 0,
                     }}
                   >
-                    <i className="bi bi-award-fill" aria-hidden="true"></i>
+                    <BsAwardFill aria-hidden="true" />
                   </div>
                   <div>
                     <h4 style={{ color: "#fff", margin: 0, fontSize: "1.05rem", fontFamily: "'Poppins', sans-serif", fontWeight: 600 }}>
@@ -343,7 +344,7 @@ export default function AboutSection({ isSmallScreen }) {
                       flexShrink: 0,
                     }}
                   >
-                    <i className="bi bi-lightning-charge-fill" aria-hidden="true"></i>
+                    <BsLightningChargeFill aria-hidden="true" />
                   </div>
                   <div>
                     <h4 style={{ color: "#fff", margin: 0, fontSize: "1.05rem", fontFamily: "'Poppins', sans-serif", fontWeight: 600 }}>
