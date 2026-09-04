@@ -58,7 +58,7 @@ const ProfileCardComponent = ({
   const tiltEngine = useMemo(() => {
     // Disable tilt on touch devices and mobile - too heavy for mobile performance
     if (!enableTilt || isTouchOrMobile) return null;
-x``
+
     let rafId = null;
     let running = false;
     let lastTs = 0;
@@ -250,7 +250,7 @@ x``
     if (!shell) return;
 
     // Skip pointer tracking on touch devices
-    if (isTouchDevice.current) {
+    if (isTouchOrMobile) {
       return;
     }
 
@@ -301,6 +301,7 @@ x``
   }, [
     enableTilt,
     enableMobileTilt,
+    isTouchOrMobile,
     tiltEngine,
     handlePointerMove,
     handlePointerEnter,
@@ -312,13 +313,13 @@ x``
     () => ({
       '--icon': iconUrl ? `url(${iconUrl})` : 'none',
       '--icon-size': iconSize,
-      '--grain': isMobileDevice.current ? 'none' : (grainUrl ? `url(${grainUrl})` : 'none'),
+      '--grain': isTouchOrMobile ? 'none' : (grainUrl ? `url(${grainUrl})` : 'none'),
       '--inner-gradient': innerGradient ?? DEFAULT_INNER_GRADIENT,
       '--behind-glow-color': behindGlowColor ?? 'rgba(125, 190, 255, 0.67)',
       '--behind-glow-size': behindGlowSize ?? '50%',
-      '--is-mobile': isMobileDevice.current ? '1' : '0'
+      '--is-mobile': isTouchOrMobile ? '1' : '0'
     }),
-    [iconUrl, grainUrl, innerGradient, behindGlowColor, behindGlowSize, isMobileDevice.current]
+    [iconUrl, grainUrl, innerGradient, behindGlowColor, behindGlowSize, isTouchOrMobile]
   );
 
   const handleContactClick = useCallback(() => {
